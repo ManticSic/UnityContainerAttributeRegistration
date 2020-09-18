@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityContainerAttributeRegistration", "src\UnityContainerAttributeRegistration\UnityContainerAttributeRegistration.csproj", "{F8FE3B9C-DF3A-4F80-9F60-8E07188F129D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityContainerAttributeRegistrationTest", "src\UnityContainerAttributeRegistrationTest\UnityContainerAttributeRegistrationTest.csproj", "{FA3D498C-371E-4471-A6E3-21A380E08194}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8FE3B9C-DF3A-4F80-9F60-8E07188F129D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FE3B9C-DF3A-4F80-9F60-8E07188F129D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FE3B9C-DF3A-4F80-9F60-8E07188F129D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FE3B9C-DF3A-4F80-9F60-8E07188F129D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3D498C-371E-4471-A6E3-21A380E08194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3D498C-371E-4471-A6E3-21A380E08194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3D498C-371E-4471-A6E3-21A380E08194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3D498C-371E-4471-A6E3-21A380E08194}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
