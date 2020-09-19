@@ -14,8 +14,12 @@ namespace UnityContainerAttributeRegistration
     {
         public static IUnityContainer Build()
         {
-            IUnityContainer container = new UnityContainer();
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.NotInherit)
+            return Build(new UnityContainer());
+        }
+
+        public static IUnityContainer Build(IUnityContainer container)
+        {
+            IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.Inherit)
                .ToArray();
 
             foreach(Type to in typesWithAttribute)
@@ -30,7 +34,7 @@ namespace UnityContainerAttributeRegistration
             return container;
         }
 
-        internal static IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
+        private static IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
         {
             return AppDomain.CurrentDomain
                             .GetAssemblies()

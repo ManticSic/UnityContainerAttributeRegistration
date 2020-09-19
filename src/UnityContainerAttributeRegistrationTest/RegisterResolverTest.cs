@@ -17,7 +17,7 @@ namespace UnityContainerAttributeRegistrationTest
     public class RegisterResolverTest
     {
         [Test]
-        public void TestBuild()
+        public void TestBuild_Default()
         {
             IUnityContainer container = UnityContainerBuilder.Build();
 
@@ -71,6 +71,16 @@ namespace UnityContainerAttributeRegistrationTest
                                                  typeof(ClassPerThreadLifetimeManager),
                                                  typeof(ClassPerThreadLifetimeManager),
                                                  typeof(PerThreadLifetimeManager)));
+        }
+
+        [Test]
+        public void TestBuild_WithCustomContainer()
+        {
+            IUnityContainer container = new UnityContainer();
+
+            IUnityContainer result = UnityContainerBuilder.Build(container);
+
+            AreSame(container, result);
         }
 
         private bool IsUnityContainerRegistration(IContainerRegistration registration)
