@@ -18,6 +18,6 @@ git:
   depth: false
 
 script: 
-#  - dotnet restore
-#  - dotnet build --configuration Release --no-restore --verbosity minimal
-  - sonar-scanner
+  - dotnet restore
+  - dotnet build --configuration Release --no-restore --verbosity minimal
+#  - sonar-scanner
