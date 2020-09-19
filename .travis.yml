@@ -1,6 +1,6 @@
 ﻿language: csharp
 
-os: windows
+os: linux
 
 solution: UnityContainerAttributeRegistration.sln
 
