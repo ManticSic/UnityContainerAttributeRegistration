@@ -1,7 +1,11 @@
 ﻿language: csharp
 
 os: linux
+dist: bionic
+arch: amd64
 
+mono: none
+dotnet: 3.1.402
 solution: UnityContainerAttributeRegistration.sln
 
 git: 
