@@ -4,14 +4,10 @@ os: windows
 
 solution: UnityContainerAttributeRegistration.sln
 
-env:
-  - CONFIGURATION=Release
-  - VERBOSITY=minimal
-
 git: 
   depth: false
 
 script: 
   - dotnet restore
-  - dotnet build --configuration $CONFIGURATION --no-restore --verbosity $VERBOSITY
-  - dotnet test  --configuration $CONFIGURATION --no-restore --verbosity $VERBOSITY
+  - dotnet build --configuration Release --no-restore --verbosity minimal
+  - dotnet test  --configuration Release --no-restore --verbosity minimal
