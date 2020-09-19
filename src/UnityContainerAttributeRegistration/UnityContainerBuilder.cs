@@ -15,7 +15,7 @@ namespace UnityContainerAttributeRegistration
         public static IUnityContainer Build()
         {
             IUnityContainer container = new UnityContainer();
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(false)
+            IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.NotInherit)
                .ToArray();
 
             foreach(Type to in typesWithAttribute)
@@ -30,12 +30,12 @@ namespace UnityContainerAttributeRegistration
             return container;
         }
 
-        internal static IEnumerable<Type> GetTypesWith<TAttribute>(bool inherit) where TAttribute : Attribute
+        internal static IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
         {
             return AppDomain.CurrentDomain
                             .GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
-                            .Where(type => type.IsDefined(typeof(TAttribute), inherit))
+                            .Where(type => type.IsDefined(typeof(TAttribute), typeDefined == TypeDefined.Inherit))
                 ;
         }
 
@@ -44,23 +44,41 @@ namespace UnityContainerAttributeRegistration
             switch(typeLifetimeManager)
             {
                 case TypeLifetimeManager.HierarchicalLifetimeManager:
+                {
                     return new HierarchicalLifetimeManager();
+                }
                 case TypeLifetimeManager.SingletonLifetimeManager:
+                {
                     return new SingletonLifetimeManager();
+                }
                 case TypeLifetimeManager.TransientLifetimeManager:
+                {
                     return new TransientLifetimeManager();
+                }
                 case TypeLifetimeManager.ContainerControlledLifetimeManager:
+                {
                     return new ContainerControlledLifetimeManager();
+                }
                 case TypeLifetimeManager.ContainerControlledTransientManager:
+                {
                     return new ContainerControlledTransientManager();
+                }
                 case TypeLifetimeManager.ExternallyControlledLifetimeManager:
+                {
                     return new ExternallyControlledLifetimeManager();
+                }
                 case TypeLifetimeManager.PerResolveLifetimeManager:
+                {
                     return new PerResolveLifetimeManager();
+                }
                 case TypeLifetimeManager.PerThreadLifetimeManager:
+                {
                     return new PerThreadLifetimeManager();
+                }
                 default:
+                {
                     throw new InvalidEnumArgumentException();
+                }
             }
         }
     }
