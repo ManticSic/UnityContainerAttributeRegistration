@@ -1,5 +1,9 @@
 ﻿root = true
 
+[*]
+end_of_line = lf
+insert_final_newline = true
+
 [*.cs]
 dotnet_diagnostic.av1500.max_statement_count = 12
 dotnet_diagnostic.av1561.max_parameter_count = 5
