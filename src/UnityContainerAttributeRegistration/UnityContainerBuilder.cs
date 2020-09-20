@@ -12,6 +12,13 @@ namespace UnityContainerAttributeRegistration
 {
     public sealed class UnityContainerBuilder
     {
+        private readonly AppDomain appDomain;
+
+        public UnityContainerBuilder(AppDomain appDomain)
+        {
+            this.appDomain = appDomain;
+        }
+
         public IUnityContainer Build()
         {
             return Build(new UnityContainer());
@@ -43,8 +50,7 @@ namespace UnityContainerAttributeRegistration
 
         private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
         {
-            return AppDomain.CurrentDomain
-                            .GetAssemblies()
+            return appDomain.GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
                             .Where(type => type.IsDefined(typeof(TAttribute), typeDefined == TypeDefined.Inherit))
                 ;
