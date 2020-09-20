@@ -85,7 +85,7 @@ namespace UnityContainerAttributeRegistration
             return (T) ctor.Invoke(new object[0]);
         }
 
-        private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
+        private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : System.Attribute
         {
             return appDomain.GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
