@@ -23,7 +23,11 @@ script:
   - dotnet test  --configuration release --no-restore --verbosity minimal
 
 before_deploy:
-  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TAG_NAME -p:RepositoryBranch=$TRAVIS_JOB_ID -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=../..
+  - echo $TRAVIS_JOB_ID
+  - echo $TRAVIS_COMMIT
+  - echo $TAG_NAME
+  - echo $TRAVIS_TAG
+  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_JOB_ID -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=../..
 
 deploy: 
   provider: releases
