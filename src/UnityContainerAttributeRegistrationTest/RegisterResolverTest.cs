@@ -34,29 +34,16 @@ namespace UnityContainerAttributeRegistrationTest
         [TestCase(typeof(PerThreadLifetimeManager), typeof(PerThreadLifetimeManager))]
         public void TestBuild_TypeLifetimeManagers(Type lifetimeManagerType, Type expectedTypeLifetimeMangerType)
         {
-            Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
-            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
+            Scope scope = new Scope();
 
             Type type = new FakeType("Test",
                                      "ClassA",
-                                     assemblyMock.Object,
+                                     scope.Assembly,
                                      attributes: new RegisterTypeAttribute(null, lifetimeManagerType));
 
-            Type[] typesWithAttribute =
-            {
-                type
-            };
+            scope.AddType(type);
 
-            assemblyMock.Setup(mock => mock.GetTypes())
-                        .Returns(typesWithAttribute);
-
-            appDomainMock.Setup(mock => mock.GetAssemblies())
-                         .Returns(new List<Assembly>
-                                  {
-                                      assemblyMock.Object
-                                  }.ToArray());
-
-            IUnityContainer container = new UnityContainerBuilder(appDomainMock.Object).Build();
+            IUnityContainer container = new UnityContainerBuilder(scope.GetAppDomain()).Build();
 
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
@@ -71,29 +58,16 @@ namespace UnityContainerAttributeRegistrationTest
         [TestCase(typeof(LifetimeManagerWithoutInterface))]
         public void TestBuild_InvalidTypeLifetimeManagers(Type invalidLifetimeManagerType)
         {
-            Mock<Assembly>             assemblyMock  = new Mock<Assembly>();
-            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
+            Scope scope = new Scope();
 
             Type type = new FakeType("Test",
                                      "ClassA",
-                                     assemblyMock.Object,
+                                     scope.Assembly,
                                      attributes: new RegisterTypeAttribute(null, invalidLifetimeManagerType));
 
-            Type[] typesWithAttribute =
-            {
-                type
-            };
+            scope.AddType(type);
 
-            assemblyMock.Setup(mock => mock.GetTypes())
-                        .Returns(typesWithAttribute);
-
-            appDomainMock.Setup(mock => mock.GetAssemblies())
-                         .Returns(new List<Assembly>
-                                  {
-                                      assemblyMock.Object
-                                  }.ToArray());
-
-            Throws<InvalidOperationException>(() => new UnityContainerBuilder(appDomainMock.Object).Build());
+            Throws<InvalidOperationException>(() => new UnityContainerBuilder(scope.GetAppDomain()).Build());
         }
 
         [Test]
