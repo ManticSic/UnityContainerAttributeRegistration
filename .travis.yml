@@ -1,4 +1,4 @@
-﻿language: csharp
+language: csharp
 
 os: linux
 dist: bionic
@@ -8,35 +8,38 @@ mono: none
 dotnet: 3.1.402
 solution: UnityContainerAttributeRegistration.sln
 
+env:
+  global:
+    secure: d/kT2bAazlGl0eICb/BvnkrFQERA6qYmoDyF/lP1wZWHlxs2wnhHBn5FYoVr2nI+SL4L3jo2CYNecS7t6UidnSmUD9QtB0SzFHaX9bWhfW57BirscSR9boPl6bDV+vR8xU5E/bol3wAxg6DPo8olVT3eTL71k8GdAGWoWcO+eIGB5144zB/3leqnUCTQs/WlqRo5rb0i3AxBWph8oLImnQh0AMS8RUfV1Oasu1/2nP9HW04/KM8CX1IlMpogk2fcimK2/Tvf82sVMDyFxdUFGdzDZ5pVUg58Mycd0LFHQ11OmNGAkuTaFPBIbJeOxU2778GfRMl7O8MCIImRlquQaByfcdAZf6vJlUtnh3ydjtFlDEO1P0L+v9IJf0Eq9rW5uKlgbjv+srzmWa8B4U1msdIPND4KzwQwmYDl61xxCusRl+cfXKgTiIjUo6mx9qppl12CgULqVVj8ulm4AxSVDGIGgvmY4SjwnISTAPaZdB5UY55xHrSChYZ6Wn1FvUSKECoEV9CsH50FatU3zHKobWmrz2sHW4KvGHM+bdk2mT9NHnUOY9NIcbSdv4qdGqCe5i3rlI+/b7T688ckqJ4BJWA61aIu8epLhCdFKzeKGthOlyF0DOjk6VC8finJPUqxtoWSXXBJx1oBuEPHQl+UD+wY/coV+M7Qufq5P2S4XzQ=
+
 addons: 
   sonarcloud:
-    organization: "manticsic"
+    organization: manticsic
     token:
-      secure: "YQE2S+Yq55EnlEezd3fUSmqGnHg2bH5LmC4wz8APD+/OzOJdTiVIk7dtv/ubKV0ZbTKFCbjwJUEXoxUnMhEuTAWdndTA71a/1dQq230BjD6HE95ul9BSsNp1E1+ZB/SmW1EztKSazugdmj8lqjvwhCJGT/QbKhwRzZaeLI+w1Rv588FjcnxGvu8odS26EGd+JvJiSbMBya9RRkvJHPmDUxRCTxStSFC7tcawFH7xOyexbT9rcJkZpdzetQ8c9a9eCHSaZyTVsMNJp+gdu4YEdUgUX2Rz32jvcmsbH+BRd2C+OBak8htWHv7qQM/ADviWJASs2ODjPIqmb2tTQnsMgorMrQRjI9QvuaMx2bpLUce1iGKjIGJOqv13/IKCMvAtG+uOa9hCoxTJxqm+XHLPkWtlhvDQQz2tjoqRyJ/+g0N8sw8rP5XuwdVDxSn0y1lQF3AwUilJt0TbVzAdzBDVb+DzNp3rhv2P6a8ahwfP73IdjRJWVHkXKnBeS7vtMwjGRCFUrUG1KO3ZmxYUaQjtL/oL0osm1S3q2ggCWCUVzlHmT7iYI3V8gm5femHryBeZ+FNp+ElAWNoQ3nXigIHKVoGX+DgtXHgNAga91F0/qW3ZrY/Y/NMOn1bFu6CIRizxxrBSU1peNmkYmirJtlfm5W+9Yk3UbHSxW9ePfcC7NgM="
+      secure: YQE2S+Yq55EnlEezd3fUSmqGnHg2bH5LmC4wz8APD+/OzOJdTiVIk7dtv/ubKV0ZbTKFCbjwJUEXoxUnMhEuTAWdndTA71a/1dQq230BjD6HE95ul9BSsNp1E1+ZB/SmW1EztKSazugdmj8lqjvwhCJGT/QbKhwRzZaeLI+w1Rv588FjcnxGvu8odS26EGd+JvJiSbMBya9RRkvJHPmDUxRCTxStSFC7tcawFH7xOyexbT9rcJkZpdzetQ8c9a9eCHSaZyTVsMNJp+gdu4YEdUgUX2Rz32jvcmsbH+BRd2C+OBak8htWHv7qQM/ADviWJASs2ODjPIqmb2tTQnsMgorMrQRjI9QvuaMx2bpLUce1iGKjIGJOqv13/IKCMvAtG+uOa9hCoxTJxqm+XHLPkWtlhvDQQz2tjoqRyJ/+g0N8sw8rP5XuwdVDxSn0y1lQF3AwUilJt0TbVzAdzBDVb+DzNp3rhv2P6a8ahwfP73IdjRJWVHkXKnBeS7vtMwjGRCFUrUG1KO3ZmxYUaQjtL/oL0osm1S3q2ggCWCUVzlHmT7iYI3V8gm5femHryBeZ+FNp+ElAWNoQ3nXigIHKVoGX+DgtXHgNAga91F0/qW3ZrY/Y/NMOn1bFu6CIRizxxrBSU1peNmkYmirJtlfm5W+9Yk3UbHSxW9ePfcC7NgM=
 
-git: 
+git:
   depth: false
 
-script: 
+script:
   - dotnet restore
   - dotnet build --configuration release --no-restore --verbosity minimal
   - dotnet test  --configuration release --no-restore --verbosity minimal
 
 before_deploy:
-  - echo ${TRAVIS_TAG}
-  - echo $TRAVIS_TAG
+  - echo $(pwd)
   - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
 
-deploy: 
+deploy:
   provider: releases
-  api_key: $GH_TOKEN
+  api_key: "$GH_TOKEN"
   file_glob: true
-  file: "bin/Release/UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
+  file: UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg
   skip_cleanup: true
   overwrite: true
   on:
     tags: true
-    
-after_deploy: 
+
+after_deploy:
   - dotnet nuget add source https://nuget.pkg.github.com/ManticSic/index.json -n github -u ManticSic -p $GH_TOKEN
-  - dotnet nuget push "bin/Release/UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
+  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
