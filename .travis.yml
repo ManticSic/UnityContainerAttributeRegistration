@@ -28,18 +28,20 @@ script:
 
 before_deploy:
   - echo $(pwd)
-  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
+  - echo "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
+  - ls -la
+  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=../..
 
 deploy:
   provider: releases
   api_key: "$GH_TOKEN"
   file_glob: true
-  file: UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg
+  file: "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
   skip_cleanup: true
   overwrite: true
   on:
     tags: true
 
-after_deploy:
-  - dotnet nuget add source https://nuget.pkg.github.com/ManticSic/index.json -n github -u ManticSic -p $GH_TOKEN
-  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
+#after_deploy:
+#  - dotnet nuget add source https://nuget.pkg.github.com/ManticSic/index.json -n github -u ManticSic -p $GH_TOKEN
+#  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
