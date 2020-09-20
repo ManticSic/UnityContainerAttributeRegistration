@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+
+using JetBrains.Annotations;
 
 using Unity;
 using Unity.Lifetime;
@@ -45,11 +46,38 @@ namespace UnityContainerAttributeRegistration
                 // todo check for to.IsAbstract and to.IsInterface and throw
 
                 RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
+                ITypeLifetimeManager lifetimeManager =
+                    attribute.LifetimeManager == null ? null : GetInstanceByType<ITypeLifetimeManager>(attribute.LifetimeManager);
 
                 container.RegisterType(attribute.From ?? to,
                                        to,
-                                       GetTypeLifetimeManager(attribute.LifetimeManager));
+                                       lifetimeManager);
             }
+        }
+
+        [CanBeNull]
+        private T GetInstanceByType<T>([CanBeNull] Type typeLifetimeManagerType)
+        {
+            Type targetType = typeof(T);
+
+            if(typeLifetimeManagerType == null)
+            {
+                throw new ArgumentNullException(nameof(typeLifetimeManagerType));
+            }
+
+            if(!targetType.IsAssignableFrom(typeLifetimeManagerType))
+            {
+                throw new InvalidOperationException($"Type {typeLifetimeManagerType.FullName} cannot be assigned from {targetType.FullName}");
+            }
+
+            ConstructorInfo ctor = typeLifetimeManagerType.GetConstructor(Type.EmptyTypes);
+
+            if(ctor == null)
+            {
+                throw new InvalidOperationException($"Cannot create instance of ITypeLifetimeManager. No default constructor found for {typeLifetimeManagerType.FullName}");
+            }
+
+            return (T)ctor.Invoke(new object[0]);
         }
 
         private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
@@ -58,53 +86,6 @@ namespace UnityContainerAttributeRegistration
                             .SelectMany(assembly => assembly.GetTypes())
                             .Where(type => type.IsDefined(typeof(TAttribute), typeDefined == TypeDefined.Inherit))
                 ;
-        }
-
-        private ITypeLifetimeManager GetTypeLifetimeManager(TypeLifetimeManager typeLifetimeManager)
-        {
-            switch(typeLifetimeManager)
-            {
-                case TypeLifetimeManager.Default:
-                {
-                    return null;
-                }
-                case TypeLifetimeManager.HierarchicalLifetimeManager:
-                {
-                    return new HierarchicalLifetimeManager();
-                }
-                case TypeLifetimeManager.SingletonLifetimeManager:
-                {
-                    return new SingletonLifetimeManager();
-                }
-                case TypeLifetimeManager.TransientLifetimeManager:
-                {
-                    return new TransientLifetimeManager();
-                }
-                case TypeLifetimeManager.ContainerControlledLifetimeManager:
-                {
-                    return new ContainerControlledLifetimeManager();
-                }
-                case TypeLifetimeManager.ContainerControlledTransientManager:
-                {
-                    return new ContainerControlledTransientManager();
-                }
-                case TypeLifetimeManager.ExternallyControlledLifetimeManager:
-                {
-                    return new ExternallyControlledLifetimeManager();
-                }
-                case TypeLifetimeManager.PerResolveLifetimeManager:
-                {
-                    return new PerResolveLifetimeManager();
-                }
-                case TypeLifetimeManager.PerThreadLifetimeManager:
-                {
-                    return new PerThreadLifetimeManager();
-                }
-                default:
-                {
-                    throw new InvalidEnumArgumentException();
-                }
-            }
         }
     }
 }

@@ -8,9 +8,8 @@ namespace UnityContainerAttributeRegistration
     [AttributeUsage(AttributeTargets.Class)]
     public class RegisterTypeAttribute : Attribute
     {
-        public RegisterTypeAttribute([CanBeNull] Type from = null,
-                                     TypeLifetimeManager lifetimeManager =
-                                         TypeLifetimeManager.Default)
+        public RegisterTypeAttribute([CanBeNull] Type from            = null,
+                                     [CanBeNull] Type lifetimeManager = null)
         {
             From            = from;
             LifetimeManager = lifetimeManager;
@@ -19,6 +18,7 @@ namespace UnityContainerAttributeRegistration
         [CanBeNull]
         internal Type From { get; }
 
-        internal TypeLifetimeManager LifetimeManager { get; }
+        [CanBeNull]
+        internal Type LifetimeManager { get; }
     }
 }

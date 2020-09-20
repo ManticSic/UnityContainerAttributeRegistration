@@ -13,6 +13,7 @@ using Unity.Lifetime;
 using UnityContainerAttributeRegistration;
 
 using UnityContainerAttributeRegistrationTest.Helper;
+using UnityContainerAttributeRegistrationTest.Helper.LifetimeManager;
 
 using static NUnit.Framework.Assert;
 
@@ -22,16 +23,16 @@ namespace UnityContainerAttributeRegistrationTest
     public class RegisterResolverTest
     {
         [Test]
-        [TestCase(TypeLifetimeManager.Default, typeof(TransientLifetimeManager))]
-        [TestCase(TypeLifetimeManager.HierarchicalLifetimeManager, typeof(HierarchicalLifetimeManager))]
-        [TestCase(TypeLifetimeManager.SingletonLifetimeManager, typeof(SingletonLifetimeManager))]
-        [TestCase(TypeLifetimeManager.TransientLifetimeManager, typeof(TransientLifetimeManager))]
-        [TestCase(TypeLifetimeManager.ContainerControlledLifetimeManager, typeof(ContainerControlledLifetimeManager))]
-        [TestCase(TypeLifetimeManager.ContainerControlledTransientManager, typeof(ContainerControlledTransientManager))]
-        [TestCase(TypeLifetimeManager.ExternallyControlledLifetimeManager, typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(TypeLifetimeManager.PerResolveLifetimeManager, typeof(PerResolveLifetimeManager))]
-        [TestCase(TypeLifetimeManager.PerThreadLifetimeManager, typeof(PerThreadLifetimeManager))]
-        public void TestBuild_TypeLifetimeManagers(TypeLifetimeManager lifetimeManager, Type expectedTypeLifetimeManger)
+        [TestCase(null, typeof(TransientLifetimeManager))]
+        [TestCase(typeof(HierarchicalLifetimeManager), typeof(HierarchicalLifetimeManager))]
+        [TestCase(typeof(SingletonLifetimeManager), typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(TransientLifetimeManager), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ContainerControlledLifetimeManager), typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ContainerControlledTransientManager), typeof(ContainerControlledTransientManager))]
+        [TestCase(typeof(ExternallyControlledLifetimeManager), typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(PerResolveLifetimeManager), typeof(PerResolveLifetimeManager))]
+        [TestCase(typeof(PerThreadLifetimeManager), typeof(PerThreadLifetimeManager))]
+        public void TestBuild_TypeLifetimeManagers(Type lifetimeManagerType, Type expectedTypeLifetimeMangerType)
         {
             Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
             Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
@@ -39,7 +40,7 @@ namespace UnityContainerAttributeRegistrationTest
             Type type = new FakeType("Test",
                                      "ClassA",
                                      assemblyMock.Object,
-                                     attributes: new RegisterTypeAttribute(null, lifetimeManager));
+                                     attributes: new RegisterTypeAttribute(null, lifetimeManagerType));
 
             Type[] typesWithAttribute =
             {
@@ -62,7 +63,37 @@ namespace UnityContainerAttributeRegistrationTest
             AreEqual(2, result.Count);
 
             IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, expectedTypeLifetimeManger));
+            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, expectedTypeLifetimeMangerType));
+        }
+
+        [Test]
+        [TestCase(typeof(TypeLifetimeManagerWithoutDefaultCtor))]
+        [TestCase(typeof(LifetimeManagerWithoutInterface))]
+        public void TestBuild_InvalidTypeLifetimeManagers(Type invalidLifetimeManagerType)
+        {
+            Mock<Assembly>             assemblyMock  = new Mock<Assembly>();
+            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
+
+            Type type = new FakeType("Test",
+                                     "ClassA",
+                                     assemblyMock.Object,
+                                     attributes: new RegisterTypeAttribute(null, invalidLifetimeManagerType));
+
+            Type[] typesWithAttribute =
+            {
+                type
+            };
+
+            assemblyMock.Setup(mock => mock.GetTypes())
+                        .Returns(typesWithAttribute);
+
+            appDomainMock.Setup(mock => mock.GetAssemblies())
+                         .Returns(new List<Assembly>
+                                  {
+                                      assemblyMock.Object
+                                  }.ToArray());
+
+            Throws<InvalidOperationException>(() => new UnityContainerBuilder(appDomainMock.Object).Build());
         }
 
         [Test]
