@@ -12,9 +12,13 @@ namespace UnityContainerAttributeRegistration
 {
     public sealed class UnityContainerBuilder
     {
-        private readonly AppDomain appDomain;
+        private readonly IAppDomainAdapter appDomain;
 
-        public UnityContainerBuilder(AppDomain appDomain)
+        public UnityContainerBuilder() : this(new AppDomainAdapter())
+        {
+        }
+
+        public UnityContainerBuilder(IAppDomainAdapter appDomain)
         {
             this.appDomain = appDomain;
         }

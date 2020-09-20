@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+
+using Moq;
 
 using NUnit.Framework;
 
@@ -8,6 +11,8 @@ using Unity;
 using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration;
+
+using UnityContainerAttributeRegistrationTest.Helper;
 
 using static NUnit.Framework.Assert;
 
@@ -19,66 +24,55 @@ namespace UnityContainerAttributeRegistrationTest
         [Test]
         public void TestBuild_Default()
         {
-            IUnityContainer container = new UnityContainerBuilder(AppDomain.CurrentDomain).Build();
+            Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
+            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
+
+            Type type = new FakeType("Test",
+                                     "ClassA",
+                                     assemblyMock.Object,
+                                     attributes: new RegisterTypeAttribute());
+
+            Type[] typesWithAttribute =
+            {
+                type
+            };
+
+            assemblyMock.Setup(mock => mock.GetTypes())
+                        .Returns(typesWithAttribute);
+
+            appDomainMock.Setup(mock => mock.GetAssemblies())
+                         .Returns(new List<Assembly>
+                                  {
+                                      assemblyMock.Object
+                                  }.ToArray());
+
+            IUnityContainer container = new UnityContainerBuilder(appDomainMock.Object).Build();
 
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
-            AreEqual(10, result.Count);
+            AreEqual(2, result.Count);
 
             IsTrue(IsUnityContainerRegistration(result[0]));
-
-            IsTrue(IsExpectedRegisteredContainer(result[1],
-                                                 typeof(ClassDefault),
-                                                 typeof(ClassDefault),
-                                                 typeof(TransientLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[2],
-                                                 typeof(IInterface),
-                                                 typeof(ClassHierarchicalLifetimeManager),
-                                                 typeof(HierarchicalLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[3],
-                                                 typeof(ClassSingletonLifetimeManager),
-                                                 typeof(ClassSingletonLifetimeManager),
-                                                 typeof(SingletonLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[4],
-                                                 typeof(ClassTransientLifetimeManager),
-                                                 typeof(ClassTransientLifetimeManager),
-                                                 typeof(TransientLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[5],
-                                                 typeof(ClassContainerControlledLifetimeManager),
-                                                 typeof(ClassContainerControlledLifetimeManager),
-                                                 typeof(ContainerControlledLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[6],
-                                                 typeof(ClassContainerControlledTransientManager),
-                                                 typeof(ClassContainerControlledTransientManager),
-                                                 typeof(ContainerControlledTransientManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[7],
-                                                 typeof(ClassExternallyControlledLifetimeManager),
-                                                 typeof(ClassExternallyControlledLifetimeManager),
-                                                 typeof(ExternallyControlledLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[8],
-                                                 typeof(ClassPerResolveLifetimeManager),
-                                                 typeof(ClassPerResolveLifetimeManager),
-                                                 typeof(PerResolveLifetimeManager)));
-
-            IsTrue(IsExpectedRegisteredContainer(result[9],
-                                                 typeof(ClassPerThreadLifetimeManager),
-                                                 typeof(ClassPerThreadLifetimeManager),
-                                                 typeof(PerThreadLifetimeManager)));
+            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, typeof(TransientLifetimeManager)));
         }
 
         [Test]
         public void TestBuild_WithCustomContainer()
         {
+            Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
+            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
+
+            assemblyMock.Setup(mock => mock.GetTypes())
+                        .Returns(new Type[0]);
+            appDomainMock.Setup(mock => mock.GetAssemblies())
+                         .Returns(new List<Assembly>
+                                  {
+                                      assemblyMock.Object
+                                  }.ToArray());
+
             IUnityContainer container = new UnityContainer();
 
-            IUnityContainer result = new UnityContainerBuilder(AppDomain.CurrentDomain).Build(container);
+            IUnityContainer result = new UnityContainerBuilder().Build(container);
 
             AreSame(container, result);
         }
@@ -101,55 +95,6 @@ namespace UnityContainerAttributeRegistrationTest
             bool lifetimeManager = registration.LifetimeManager.GetType() == expectedTypeLifetimeManagerType;
 
             return registeredType && mappedToType && lifetimeManager;
-        }
-
-        [RegisterType]
-        private class ClassDefault
-        {
-        }
-
-        [RegisterType(typeof(IInterface), TypeLifetimeManager.HierarchicalLifetimeManager)]
-        private class ClassHierarchicalLifetimeManager : IInterface
-        {
-        }
-
-        [RegisterType(typeof(ClassSingletonLifetimeManager), TypeLifetimeManager.SingletonLifetimeManager)]
-        private class ClassSingletonLifetimeManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.TransientLifetimeManager)]
-        private class ClassTransientLifetimeManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.ContainerControlledLifetimeManager)]
-        private class ClassContainerControlledLifetimeManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.ContainerControlledTransientManager)]
-        private class ClassContainerControlledTransientManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.ExternallyControlledLifetimeManager)]
-        private class ClassExternallyControlledLifetimeManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.PerResolveLifetimeManager)]
-        private class ClassPerResolveLifetimeManager
-        {
-        }
-
-        [RegisterType(lifetimeManager: TypeLifetimeManager.PerThreadLifetimeManager)]
-        private class ClassPerThreadLifetimeManager
-        {
-        }
-
-        private interface IInterface
-        {
         }
     }
 }
