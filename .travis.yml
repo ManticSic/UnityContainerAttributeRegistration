@@ -23,13 +23,15 @@ script:
   - dotnet test  --configuration release --no-restore --verbosity minimal
 
 before_deploy:
-  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion="${TRAVIS_TAG}.${$TRAVIS_BUILD_NUMBER}" -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
+  - echo ${TRAVIS_TAG}
+  - echo $TRAVIS_TAG
+  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
 
 deploy: 
   provider: releases
   api_key: $GH_TOKEN
   file_glob: true
-  file: "bin/Release/UnityContainerAttributeRegistration.${$TRAVIS_TAG}.nupkg"
+  file: "bin/Release/UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
   skip_cleanup: true
   overwrite: true
   on:
