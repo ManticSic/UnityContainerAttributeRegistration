@@ -4,6 +4,23 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>UnityContainerAttributeRegistration</RootNamespace>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackageId>UnityContainerAttributeRegistration</PackageId>
+        <Title>UnityContainerAttributeRegistration</Title>
+        <PackageDescription>Allows you to use a decorator to register types</PackageDescription>
+        <PackageTags>Unity, dependency, injection, dependency-injection</PackageTags>
+        <Copyright>Copyright © 2020 Darius Weber</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+        <Authors>Darius Weber</Authors>
+        <PackageProjectUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+
+        <DevelopmentDependency>true</DevelopmentDependency>
+    </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

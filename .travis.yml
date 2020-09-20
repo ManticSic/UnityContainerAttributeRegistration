@@ -19,5 +19,18 @@ git:
 
 script: 
   - dotnet restore
-  - dotnet build --configuration Release --no-restore --verbosity minimal
-#  - sonar-scanner
+  - dotnet build --configuration release --no-restore --verbosity minimal
+  - dotnet test  --configuration release --no-restore --verbosity minimal
+
+before_deploy:
+  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TAG_NAME -p:RepositoryBranch=$TRAVIS_JOB_ID -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=../..
+
+deploy: 
+  provider: releases
+  api_key:
+    secure: "cTfe+crP1MElj7/KDY1Kn86/oOK5n+9WnmNCDvLBOeaop4o1HKa4i76H4V+KCoPHqCHxrwCPdMmXSLtqp9GoFkZMmHbBsBKOGyDNyG6pE1AmUTLX897VgfdLiHfDIJsSu4rmOtdted5KTbqNdGjHll6CtZRS+PZ2dhW4NhenZtqnV/q9I9wjnWSUb+rTjZdexZKwiElpy/Dwdx2ZuWDsrnuQ8b8yRL+vNBp3LLvPYIsCZQFdpaM8f4u9cv7lzzcTnGZUJJtPOjyNnUDsH2EGLR3xyvP3GZcqnc6/aSKFvh0W82Mw+czqNW8yQVVZaUvABr8lwxTN2DWE18R561v7Y/JT7WMCLq0H1lVsBMeTfeTnSuMrZlYbunceHw1EOUwEzI4ywB97S5aistKvbUNZPvTFHvyCZGoWdDFqEEJX4xAUfKs0Fp3GsWgMz0USts+4rNiD8qFwyxxVBpR3kON1T7Nn2pGce3j72h3SCCZXruspsSHWXkiRjRTrAR+oxkHdp/nbjlGI8iE6/VichAb3c9PyWWyvhRsmfq+GuTLTRMYbw/w4BP1/kd4cnikzK1h6om4H8ZJM8jD7aolFMOt9W0EoTma8nwpffJoIeTXIf/PFvlhTraQhHHbceodBCyzcmykFI/KJXdYJc57NHDQj1yMqnlUV9HPtxfeWk0on21s="
+  file: 
+    - "UnityContainerAttributeRegistration.nupkg"
+  skip_cleanup: true
+  on:
+    tags: true
