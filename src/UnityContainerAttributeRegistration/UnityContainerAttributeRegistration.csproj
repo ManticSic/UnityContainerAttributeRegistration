@@ -9,8 +9,8 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageId>UnityContainerAttributeRegistration</PackageId>
         <Title>UnityContainerAttributeRegistration</Title>
-        <PackageDescription>Allows you to use a decorator to register types</PackageDescription>
-        <PackageTags>Unity, dependency, injection, dependency-injection</PackageTags>
+        <PackageDescription>Register types to unity containers using an attribute.</PackageDescription>
+        <PackageTags>dependency-injection,unity-containers,unity,container,containers,builder-plate,register-types</PackageTags>
         <Copyright>Copyright © 2020 Darius Weber</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
@@ -18,8 +18,6 @@
         <PackageProjectUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-
-        <DevelopmentDependency>true</DevelopmentDependency>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
