@@ -23,13 +23,13 @@ script:
   - dotnet test  --configuration release --no-restore --verbosity minimal
 
 before_deploy:
-  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BUILD_NUMBER -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
+  - dotnet pack --configuration release --verbosity minimal -p:PackageVersion="${TRAVIS_TAG}.${$TRAVIS_BUILD_NUMBER}" -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=.
 
 deploy: 
   provider: releases
   api_key: $GH_TOKEN
   file_glob: true
-  file: "bin/Release/UnityContainerAttributeRegistration.1.0.0.nupkg"
+  file: "bin/Release/UnityContainerAttributeRegistration.${$TRAVIS_TAG}.nupkg"
   skip_cleanup: true
   overwrite: true
   on:
@@ -37,4 +37,4 @@ deploy:
     
 after_deploy: 
   - dotnet nuget add source https://nuget.pkg.github.com/ManticSic/index.json -n github -u ManticSic -p $GH_TOKEN
-  - dotnet nuget push "bin/Release/UnityContainerAttributeRegistration.1.0.0.nupkg" --source "github"
+  - dotnet nuget push "bin/Release/UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
