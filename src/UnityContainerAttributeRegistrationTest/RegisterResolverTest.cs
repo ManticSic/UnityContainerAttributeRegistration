@@ -22,7 +22,16 @@ namespace UnityContainerAttributeRegistrationTest
     public class RegisterResolverTest
     {
         [Test]
-        public void TestBuild_Default()
+        [TestCase(TypeLifetimeManager.Default, typeof(TransientLifetimeManager))]
+        [TestCase(TypeLifetimeManager.HierarchicalLifetimeManager, typeof(HierarchicalLifetimeManager))]
+        [TestCase(TypeLifetimeManager.SingletonLifetimeManager, typeof(SingletonLifetimeManager))]
+        [TestCase(TypeLifetimeManager.TransientLifetimeManager, typeof(TransientLifetimeManager))]
+        [TestCase(TypeLifetimeManager.ContainerControlledLifetimeManager, typeof(ContainerControlledLifetimeManager))]
+        [TestCase(TypeLifetimeManager.ContainerControlledTransientManager, typeof(ContainerControlledTransientManager))]
+        [TestCase(TypeLifetimeManager.ExternallyControlledLifetimeManager, typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(TypeLifetimeManager.PerResolveLifetimeManager, typeof(PerResolveLifetimeManager))]
+        [TestCase(TypeLifetimeManager.PerThreadLifetimeManager, typeof(PerThreadLifetimeManager))]
+        public void TestBuild_TypeLifetimeManagers(TypeLifetimeManager lifetimeManager, Type expectedTypeLifetimeManger)
         {
             Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
             Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
@@ -30,7 +39,7 @@ namespace UnityContainerAttributeRegistrationTest
             Type type = new FakeType("Test",
                                      "ClassA",
                                      assemblyMock.Object,
-                                     attributes: new RegisterTypeAttribute());
+                                     attributes: new RegisterTypeAttribute(null, lifetimeManager));
 
             Type[] typesWithAttribute =
             {
@@ -53,7 +62,7 @@ namespace UnityContainerAttributeRegistrationTest
             AreEqual(2, result.Count);
 
             IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, typeof(TransientLifetimeManager)));
+            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, expectedTypeLifetimeManger));
         }
 
         [Test]
