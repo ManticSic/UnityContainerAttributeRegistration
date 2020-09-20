@@ -41,5 +41,4 @@ deploy:
     tags: true
 
 after_deploy:
-  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --api-key $GH_TOKEN  --source https://nuget.pkg.github.com/ManticSic/index.json
   - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json
