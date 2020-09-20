@@ -2,6 +2,7 @@
 {
     public enum TypeLifetimeManager
     {
+        Default,
         HierarchicalLifetimeManager,
         SingletonLifetimeManager,
         TransientLifetimeManager,

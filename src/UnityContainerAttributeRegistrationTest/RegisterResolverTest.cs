@@ -30,7 +30,7 @@ namespace UnityContainerAttributeRegistrationTest
             IsTrue(IsExpectedRegisteredContainer(result[1],
                                                  typeof(ClassDefault),
                                                  typeof(ClassDefault),
-                                                 typeof(ContainerControlledLifetimeManager)));
+                                                 typeof(TransientLifetimeManager)));
 
             IsTrue(IsExpectedRegisteredContainer(result[2],
                                                  typeof(IInterface),

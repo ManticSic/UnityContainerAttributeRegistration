@@ -47,6 +47,10 @@ namespace UnityContainerAttributeRegistration
         {
             switch(typeLifetimeManager)
             {
+                case TypeLifetimeManager.Default:
+                {
+                    return null;
+                }
                 case TypeLifetimeManager.HierarchicalLifetimeManager:
                 {
                     return new HierarchicalLifetimeManager();

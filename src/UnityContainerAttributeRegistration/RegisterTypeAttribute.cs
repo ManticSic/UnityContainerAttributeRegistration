@@ -10,7 +10,7 @@ namespace UnityContainerAttributeRegistration
     {
         public RegisterTypeAttribute([CanBeNull] Type from = null,
                                      TypeLifetimeManager lifetimeManager =
-                                         TypeLifetimeManager.ContainerControlledLifetimeManager)
+                                         TypeLifetimeManager.Default)
         {
             From            = from;
             LifetimeManager = lifetimeManager;
