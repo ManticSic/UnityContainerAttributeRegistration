@@ -10,7 +10,8 @@ solution: UnityContainerAttributeRegistration.sln
 
 env:
   global:
-    secure: d/kT2bAazlGl0eICb/BvnkrFQERA6qYmoDyF/lP1wZWHlxs2wnhHBn5FYoVr2nI+SL4L3jo2CYNecS7t6UidnSmUD9QtB0SzFHaX9bWhfW57BirscSR9boPl6bDV+vR8xU5E/bol3wAxg6DPo8olVT3eTL71k8GdAGWoWcO+eIGB5144zB/3leqnUCTQs/WlqRo5rb0i3AxBWph8oLImnQh0AMS8RUfV1Oasu1/2nP9HW04/KM8CX1IlMpogk2fcimK2/Tvf82sVMDyFxdUFGdzDZ5pVUg58Mycd0LFHQ11OmNGAkuTaFPBIbJeOxU2778GfRMl7O8MCIImRlquQaByfcdAZf6vJlUtnh3ydjtFlDEO1P0L+v9IJf0Eq9rW5uKlgbjv+srzmWa8B4U1msdIPND4KzwQwmYDl61xxCusRl+cfXKgTiIjUo6mx9qppl12CgULqVVj8ulm4AxSVDGIGgvmY4SjwnISTAPaZdB5UY55xHrSChYZ6Wn1FvUSKECoEV9CsH50FatU3zHKobWmrz2sHW4KvGHM+bdk2mT9NHnUOY9NIcbSdv4qdGqCe5i3rlI+/b7T688ckqJ4BJWA61aIu8epLhCdFKzeKGthOlyF0DOjk6VC8finJPUqxtoWSXXBJx1oBuEPHQl+UD+wY/coV+M7Qufq5P2S4XzQ=
+    - secure: d/kT2bAazlGl0eICb/BvnkrFQERA6qYmoDyF/lP1wZWHlxs2wnhHBn5FYoVr2nI+SL4L3jo2CYNecS7t6UidnSmUD9QtB0SzFHaX9bWhfW57BirscSR9boPl6bDV+vR8xU5E/bol3wAxg6DPo8olVT3eTL71k8GdAGWoWcO+eIGB5144zB/3leqnUCTQs/WlqRo5rb0i3AxBWph8oLImnQh0AMS8RUfV1Oasu1/2nP9HW04/KM8CX1IlMpogk2fcimK2/Tvf82sVMDyFxdUFGdzDZ5pVUg58Mycd0LFHQ11OmNGAkuTaFPBIbJeOxU2778GfRMl7O8MCIImRlquQaByfcdAZf6vJlUtnh3ydjtFlDEO1P0L+v9IJf0Eq9rW5uKlgbjv+srzmWa8B4U1msdIPND4KzwQwmYDl61xxCusRl+cfXKgTiIjUo6mx9qppl12CgULqVVj8ulm4AxSVDGIGgvmY4SjwnISTAPaZdB5UY55xHrSChYZ6Wn1FvUSKECoEV9CsH50FatU3zHKobWmrz2sHW4KvGHM+bdk2mT9NHnUOY9NIcbSdv4qdGqCe5i3rlI+/b7T688ckqJ4BJWA61aIu8epLhCdFKzeKGthOlyF0DOjk6VC8finJPUqxtoWSXXBJx1oBuEPHQl+UD+wY/coV+M7Qufq5P2S4XzQ=
+    - secure: Ce721DHPfitTYZRUTCPPirXyPIgnCqBt7ZndCUWqpcalrDRLWgC6enCJCz35zALEajkZjPd9ePH+zeVes8BLkOLekimE5xu4ySKnSVTlp+AQ4/hj2pu2j0td/kdXEvJjomqP+K++OKyKBcjZFfANnZqZkYxvNu0qMiygX9D/jyNy1pfuo64Be8r/abyR9zd+1ZxEWEfDBBF9Y04PA3/bW9p32JY1mHmOYWNT/pf6L6wAlF/4QRBP3EJtFIYqoJjxEhx7RtGRm1UxzvvuoKMgBZQDRAzT4u9whVJjsVU4DN5ediJ9z+Jgd+K+X7HSxrqt97kaQeL12Ky6v4CW8PajikpN7Oko9Kfku5NGd4x6FN81oXvmGHfi4pavQfAtjb38qmAtUiME8vIuM5qg4OCVJB4qmecRVDsLiHGQI7r2lBYO4ZIP5oH+mAdAyAoiLynKp5U2nn9SH7eTBO0picxiWdGuAgbw/DyLAac2UdoGXMVFXzdQl07aTONxKqVp1qY48H0NBcZPidkWJsFEX+LLSANd5bzjbz97NbQbyEgvmoEEA2GQZui9fX8W03lGJkcY4t/jTnOmMwtzfwFfxAWvII24cYkVN3Z4BptXD9UTkJBQEpW/lWirJzJdmzDBhXuIdjWRmyyBFD+x9+G6yrAewAW6CaFJQs1BieBDpXma94Y=
 
 addons: 
   sonarcloud:
@@ -27,10 +28,7 @@ script:
   - dotnet test  --configuration release --no-restore --verbosity minimal
 
 before_deploy:
-  - echo $(pwd)
-  - echo "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
   - dotnet pack --configuration release --verbosity minimal -p:PackageVersion=$TRAVIS_TAG -p:RepositoryBranch=$TRAVIS_BRANCH -p:RepositoryCommit=$TRAVIS_COMMIT -p:PackageOutputPath=../..
-  - ls -la
 
 deploy:
   provider: releases
@@ -43,5 +41,5 @@ deploy:
     tags: true
 
 after_deploy:
-  - dotnet nuget add source https://nuget.pkg.github.com/ManticSic/index.json -n github -u ManticSic -p $GH_TOKEN
-  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --source "github"
+  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --api-key $GH_TOKEN  --source https://nuget.pkg.github.com/ManticSic/index.json
+  - dotnet nuget push "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg" --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json
