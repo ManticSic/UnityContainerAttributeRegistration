@@ -19,7 +19,7 @@ namespace UnityContainerAttributeRegistrationTest
         [Test]
         public void TestBuild_Default()
         {
-            IUnityContainer container = UnityContainerBuilder.Build();
+            IUnityContainer container = new UnityContainerBuilder().Build();
 
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
@@ -78,7 +78,7 @@ namespace UnityContainerAttributeRegistrationTest
         {
             IUnityContainer container = new UnityContainer();
 
-            IUnityContainer result = UnityContainerBuilder.Build(container);
+            IUnityContainer result = new UnityContainerBuilder().Build(container);
 
             AreSame(container, result);
         }

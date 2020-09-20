@@ -10,21 +10,21 @@ using Unity.Lifetime;
 
 namespace UnityContainerAttributeRegistration
 {
-    public class UnityContainerBuilder
+    public sealed class UnityContainerBuilder
     {
-        public static IUnityContainer Build()
+        public IUnityContainer Build()
         {
             return Build(new UnityContainer());
         }
 
-        public static IUnityContainer Build(IUnityContainer container)
+        public IUnityContainer Build(IUnityContainer container)
         {
             RegisterByTypeAttribute(container);
 
             return container;
         }
 
-        private static void RegisterByTypeAttribute(IUnityContainer container)
+        private void RegisterByTypeAttribute(IUnityContainer container)
         {
             IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.Inherit)
                .ToArray();
@@ -41,7 +41,7 @@ namespace UnityContainerAttributeRegistration
             }
         }
 
-        private static IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
+        private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
         {
             return AppDomain.CurrentDomain
                             .GetAssemblies()
@@ -50,7 +50,7 @@ namespace UnityContainerAttributeRegistration
                 ;
         }
 
-        private static ITypeLifetimeManager GetTypeLifetimeManager(TypeLifetimeManager typeLifetimeManager)
+        private ITypeLifetimeManager GetTypeLifetimeManager(TypeLifetimeManager typeLifetimeManager)
         {
             switch(typeLifetimeManager)
             {
