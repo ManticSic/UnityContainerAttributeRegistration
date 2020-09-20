@@ -2,7 +2,7 @@
 using System.Reflection;
 
 
-namespace UnityContainerAttributeRegistration
+namespace UnityContainerAttributeRegistration.Adapter
 {
     public interface IAppDomainAdapter
     {

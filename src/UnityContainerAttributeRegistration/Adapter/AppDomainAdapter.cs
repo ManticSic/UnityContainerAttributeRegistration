@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-namespace UnityContainerAttributeRegistration
+namespace UnityContainerAttributeRegistration.Adapter
 {
     internal class AppDomainAdapter : IAppDomainAdapter
     {

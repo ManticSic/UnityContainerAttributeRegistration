@@ -8,6 +8,9 @@ using JetBrains.Annotations;
 using Unity;
 using Unity.Lifetime;
 
+using UnityContainerAttributeRegistration.Adapter;
+using UnityContainerAttributeRegistration.Attribute;
+
 
 namespace UnityContainerAttributeRegistration
 {

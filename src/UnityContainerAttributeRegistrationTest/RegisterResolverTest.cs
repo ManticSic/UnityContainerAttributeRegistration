@@ -11,6 +11,8 @@ using Unity;
 using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration;
+using UnityContainerAttributeRegistration.Adapter;
+using UnityContainerAttributeRegistration.Attribute;
 
 using UnityContainerAttributeRegistrationTest.Helper;
 using UnityContainerAttributeRegistrationTest.Helper.LifetimeManager;

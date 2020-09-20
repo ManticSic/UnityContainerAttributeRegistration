@@ -5,7 +5,7 @@ using System.Reflection;
 
 using Moq;
 
-using UnityContainerAttributeRegistration;
+using UnityContainerAttributeRegistration.Adapter;
 
 
 namespace UnityContainerAttributeRegistrationTest.Helper

@@ -3,10 +3,10 @@
 using JetBrains.Annotations;
 
 
-namespace UnityContainerAttributeRegistration
+namespace UnityContainerAttributeRegistration.Attribute
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegisterTypeAttribute : Attribute
+    public class RegisterTypeAttribute : System.Attribute
     {
         public RegisterTypeAttribute([CanBeNull] Type from            = null,
                                      [CanBeNull] Type lifetimeManager = null)
