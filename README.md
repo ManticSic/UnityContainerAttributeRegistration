@@ -30,7 +30,7 @@ namespace My.Awesome.App
 }
 ```
 
-## FooBar
+## Details
 
 ### `RegisterTypeAttribute(from, lifetimeManager)`
 #### Description
