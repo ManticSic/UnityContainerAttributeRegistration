@@ -67,17 +67,19 @@ namespace UnityContainerAttributeRegistration
 
             if(!targetType.IsAssignableFrom(typeLifetimeManagerType))
             {
-                throw new InvalidOperationException($"Type {typeLifetimeManagerType.FullName} cannot be assigned from {targetType.FullName}");
+                throw new InvalidOperationException(
+                    $"Type {typeLifetimeManagerType.FullName} cannot be assigned from {targetType.FullName}");
             }
 
             ConstructorInfo ctor = typeLifetimeManagerType.GetConstructor(Type.EmptyTypes);
 
             if(ctor == null)
             {
-                throw new InvalidOperationException($"Cannot create instance of ITypeLifetimeManager. No default constructor found for {typeLifetimeManagerType.FullName}");
+                throw new InvalidOperationException(
+                    $"Cannot create instance of ITypeLifetimeManager. No default constructor found for {typeLifetimeManagerType.FullName}");
             }
 
-            return (T)ctor.Invoke(new object[0]);
+            return (T) ctor.Invoke(new object[0]);
         }
 
         private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute

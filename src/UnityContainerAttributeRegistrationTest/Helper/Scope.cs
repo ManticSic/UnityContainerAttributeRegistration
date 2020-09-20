@@ -15,7 +15,7 @@ namespace UnityContainerAttributeRegistrationTest.Helper
         private readonly Mock<Assembly>          assemblyMock;
         private readonly Mock<IAppDomainAdapter> appDomainMock;
 
-        private IList<Type> typesInAssembly = new List<Type>();
+        private readonly IList<Type> typesInAssembly = new List<Type>();
 
         public Scope()
         {
@@ -23,7 +23,10 @@ namespace UnityContainerAttributeRegistrationTest.Helper
             appDomainMock = new Mock<IAppDomainAdapter>();
         }
 
-        public Assembly          Assembly  => assemblyMock.Object;
+        public Assembly Assembly
+        {
+            get => assemblyMock.Object;
+        }
 
         public void AddType(Type type)
         {

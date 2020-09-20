@@ -52,7 +52,8 @@ namespace UnityContainerAttributeRegistrationTest.Helper
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            object[] result = attributes.Where(attr => attr.GetType() == attributeType || attr.GetType().IsSubclassOf(attributeType))
+            object[] result = attributes.Where(attr => attr.GetType() == attributeType || attr.GetType()
+                                                          .IsSubclassOf(attributeType))
                                         .ToArray();
 
             return result;

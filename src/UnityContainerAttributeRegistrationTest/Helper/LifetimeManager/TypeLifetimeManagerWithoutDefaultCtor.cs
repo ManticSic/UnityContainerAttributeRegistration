@@ -1,4 +1,6 @@
-﻿using Unity.Lifetime;
+﻿using System;
+
+using Unity.Lifetime;
 
 
 namespace UnityContainerAttributeRegistrationTest.Helper.LifetimeManager
@@ -14,7 +16,7 @@ namespace UnityContainerAttributeRegistrationTest.Helper.LifetimeManager
 
         public Unity.Lifetime.LifetimeManager CreateLifetimePolicy()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
