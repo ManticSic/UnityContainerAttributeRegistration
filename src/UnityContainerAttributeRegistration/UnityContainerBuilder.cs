@@ -19,19 +19,26 @@ namespace UnityContainerAttributeRegistration
 
         public static IUnityContainer Build(IUnityContainer container)
         {
+            RegisterByTypeAttribute(container);
+
+            return container;
+        }
+
+        private static void RegisterByTypeAttribute(IUnityContainer container)
+        {
             IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.Inherit)
                .ToArray();
 
             foreach(Type to in typesWithAttribute)
             {
+                // todo check for to.IsAbstract and to.IsInterface and throw
+
                 RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
 
                 container.RegisterType(attribute.From ?? to,
                                        to,
                                        GetTypeLifetimeManager(attribute.LifetimeManager));
             }
-
-            return container;
         }
 
         private static IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : Attribute
