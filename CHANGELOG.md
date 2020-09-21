@@ -1,5 +1,24 @@
 ﻿# Changelog
 
+## 0.1.2 (2020-09-20)
+### Code
+- added: XMLDocumentation for public types
+- changed: name of `UnityContainerBuilder` to `UnityContainerPopulator`
+    - changed: `UnityContainerPopulator` is no longer static
+    - changed: provide AppDomain by wrapper class
+- changed: constructor of `TypeRegisterAttribute`
+    - added: accepting type implementing `ITypeLifetimeManager`
+    - removed: usage of `TypeLifetimeManager` enum
+- changed: namespace of several public and internal classes
+- changed: improve testing
+
+### Project
+- changed: readme
+- changed: changelog
+
+### CI / CD
+- add changelog and readme to release
+
 ## 0.1.1 (2020-09-20)
 ### Project
 - changed: readme
