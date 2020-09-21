@@ -22,7 +22,7 @@ namespace UnityContainerAttributeRegistration
         {
         }
 
-        public UnityContainerPopulator(IAppDomainAdapter appDomain)
+        public UnityContainerPopulator([NotNull] IAppDomainAdapter appDomain)
         {
             this.appDomain = appDomain;
         }
@@ -32,14 +32,14 @@ namespace UnityContainerAttributeRegistration
             return Populate(new UnityContainer());
         }
 
-        public IUnityContainer Populate(IUnityContainer container)
+        public IUnityContainer Populate([NotNull] IUnityContainer container)
         {
             RegisterByTypeAttribute(container);
 
             return container;
         }
 
-        private void RegisterByTypeAttribute(IUnityContainer container)
+        private void RegisterByTypeAttribute([NotNull] IUnityContainer container)
         {
             IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.Inherit)
                .ToArray();
