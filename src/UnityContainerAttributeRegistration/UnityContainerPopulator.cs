@@ -14,25 +14,25 @@ using UnityContainerAttributeRegistration.Attribute;
 
 namespace UnityContainerAttributeRegistration
 {
-    public sealed class UnityContainerBuilder
+    public sealed class UnityContainerPopulator
     {
         private readonly IAppDomainAdapter appDomain;
 
-        public UnityContainerBuilder() : this(new AppDomainAdapter())
+        public UnityContainerPopulator() : this(new AppDomainAdapter())
         {
         }
 
-        public UnityContainerBuilder(IAppDomainAdapter appDomain)
+        public UnityContainerPopulator(IAppDomainAdapter appDomain)
         {
             this.appDomain = appDomain;
         }
 
-        public IUnityContainer Build()
+        public IUnityContainer Populate()
         {
-            return Build(new UnityContainer());
+            return Populate(new UnityContainer());
         }
 
-        public IUnityContainer Build(IUnityContainer container)
+        public IUnityContainer Populate(IUnityContainer container)
         {
             RegisterByTypeAttribute(container);
 

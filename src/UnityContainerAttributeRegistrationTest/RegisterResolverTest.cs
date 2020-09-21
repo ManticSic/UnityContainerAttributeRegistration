@@ -45,7 +45,7 @@ namespace UnityContainerAttributeRegistrationTest
 
             scope.AddType(type);
 
-            IUnityContainer container = new UnityContainerBuilder(scope.GetAppDomain()).Build();
+            IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
 
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
@@ -69,7 +69,7 @@ namespace UnityContainerAttributeRegistrationTest
 
             scope.AddType(type);
 
-            Throws<InvalidOperationException>(() => new UnityContainerBuilder(scope.GetAppDomain()).Build());
+            Throws<InvalidOperationException>(() => new UnityContainerPopulator(scope.GetAppDomain()).Populate());
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace UnityContainerAttributeRegistrationTest
 
             IUnityContainer container = new UnityContainer();
 
-            IUnityContainer result = new UnityContainerBuilder().Build(container);
+            IUnityContainer result = new UnityContainerPopulator().Populate(container);
 
             AreSame(container, result);
         }
