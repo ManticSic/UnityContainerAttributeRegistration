@@ -10,7 +10,7 @@ using UnityContainerAttributeRegistration.Adapter;
 
 namespace UnityContainerAttributeRegistrationTest.Helper
 {
-    public class Scope
+    internal class Scope
     {
         private readonly Mock<Assembly>          assemblyMock;
         private readonly Mock<IAppDomainAdapter> appDomainMock;

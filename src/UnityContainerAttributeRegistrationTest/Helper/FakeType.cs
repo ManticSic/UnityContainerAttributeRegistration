@@ -7,7 +7,7 @@ using System.Reflection;
 namespace UnityContainerAttributeRegistrationTest.Helper
 {
 #pragma warning disable CS8632
-    public class FakeType : Type
+    internal class FakeType : Type
     {
         private readonly Attribute[] attributes;
 

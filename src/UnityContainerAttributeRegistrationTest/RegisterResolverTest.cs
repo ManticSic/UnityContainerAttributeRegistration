@@ -22,7 +22,7 @@ using static NUnit.Framework.Assert;
 
 namespace UnityContainerAttributeRegistrationTest
 {
-    public class RegisterResolverTest
+    internal class RegisterResolverTest
     {
         [Test]
         [TestCase(null, typeof(TransientLifetimeManager))]

@@ -5,7 +5,7 @@ using Unity.Lifetime;
 
 namespace UnityContainerAttributeRegistrationTest.Helper.LifetimeManager
 {
-    public class TypeLifetimeManagerWithoutDefaultCtor : ITypeLifetimeManager
+    internal class TypeLifetimeManagerWithoutDefaultCtor : ITypeLifetimeManager
     {
         private readonly string anyValue;
 
