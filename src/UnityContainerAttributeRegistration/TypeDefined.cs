@@ -1,6 +1,6 @@
 ﻿namespace UnityContainerAttributeRegistration
 {
-    public enum TypeDefined
+    internal enum TypeDefined
     {
         Inherit,
         NotInherit
