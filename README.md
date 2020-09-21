@@ -19,47 +19,13 @@ namespace My.Awesome.App
     {
         public static void Main(string[] args)
         {
-            IUnityContainer container = UnityContainerBuilder.Build();
+            IUnityContainer container = UnityContainerPopulator.Populate();
         }
     }
     
-    [RegisterTypeAttribute]
+    [RegisterType]
     public class MyService
     {
     }
 }
 ```
-
-## Details
-
-### `RegisterTypeAttribute(from, lifetimeManager)`
-#### Description
-Mark a type to be registered.
-#### Parameters
-- `from`
-    - type: `System.Type`
-    - optional: `true`
-    - description: Type which will be requested, when using unity.
-- `lifetimeManager`
-    - type: `UnityContainerAttributeRegistration.TypeLifetimeManager`
-    - optional: `true`
-    - description: `ITypeLifetimeManager` which should be used.
-
-### `UnityContainerBuilder.Build()`
-#### Description
-Search for all types using `RegisterTypeAttribute` and register these types to a new `IUnityContainer`.
-#### Return value
-- type: `Unity.IUnityContainer`
-- description: New `Unity.IUnityContainer` instance, containing the registered types.
-
-### `UnityContainerBuilder.Build(container)`
-#### Description
-Search for all types using `RegisterTypeAttribute` and register these types to the passed `IUnityContainer`.
-#### Parameters
-- `container`
-    - type: `Unity.IUnityContainer`
-    - optional: `false`
-    - description: `IUnityContainer` instance to register types
-#### Return value
-- type: `Unity.IUnityContainer`
-- description: The passed `Unity.IUnityContainer`, containing the registered types.
