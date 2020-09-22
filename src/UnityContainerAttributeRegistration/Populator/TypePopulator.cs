@@ -31,7 +31,7 @@ namespace UnityContainerAttributeRegistration.Populator
             {
                 if(to.IsStatic() || to.IsAbstract)
                 {
-                    throw new InvalidOperationException("TODO throw better exception");
+                    throw new InvalidOperationException($"Type must not be static or abstract to be used with RegisterTypeAttribute: {to.FullName}");
                 }
 
                 RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
