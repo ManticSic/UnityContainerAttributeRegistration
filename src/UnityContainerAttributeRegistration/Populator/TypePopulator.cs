@@ -29,7 +29,7 @@ namespace UnityContainerAttributeRegistration.Populator
 
             foreach(Type to in typesWithAttribute)
             {
-                if(to.IsStatic() || to.IsAbstract || to.IsInterface)
+                if(to.IsStatic() || to.IsAbstract)
                 {
                     throw new InvalidOperationException("TODO throw better exception");
                 }
