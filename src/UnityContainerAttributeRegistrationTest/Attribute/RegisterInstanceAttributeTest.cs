@@ -37,7 +37,7 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager),typeof(IAnyInterface),  typeof(PerResolveLifetimeManager))]
         [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager),typeof(IAnyInterface),  typeof(PerThreadLifetimeManager))]
         [TestCase(typeof(ClassWithLifetimeManager), typeof(ClassWithLifetimeManager), typeof(TransientLifetimeManager))]
-        public void TestBuild_TypeLifetimeManagers(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
+        public void TestPopulate(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
         {
             Scope scope = new Scope();
 
@@ -58,7 +58,7 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         [TestCase(typeof(ClassWithLifetimeManagerWithoutDefaultCtor))]
         [TestCase(typeof(StaticClassWithAttribute))]
         [TestCase(typeof(AbstractClassWithAttribute))]
-        public void TestBuild_InvalidUsage(Type to)
+        public void TestPopulate_InvalidUsage(Type to)
         {
             Scope scope = new Scope();
 
@@ -68,7 +68,7 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         }
 
         [Test]
-        public void TestBuild_WithCustomContainer()
+        public void TestPopulate_WithCustomContainer()
         {
             Scope scope = new Scope();
 
