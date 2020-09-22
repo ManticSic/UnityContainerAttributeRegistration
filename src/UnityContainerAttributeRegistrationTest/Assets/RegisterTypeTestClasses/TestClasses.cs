@@ -78,7 +78,19 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses
     }
 
     [RegisterType(null, typeof(TypeLifetimeManagerWithoutDefaultCtor))]
-    public class ClassWithLifetimeManagerWithoutDefaultCtor{}
+    public class ClassWithLifetimeManagerWithoutDefaultCtor
+    {
+    }
+
+    [RegisterType(null, typeof(TransientLifetimeManager))]
+    public static class StaticClassWithAttribute
+    {
+    }
+
+    [RegisterType(null, typeof(TransientLifetimeManager))]
+    public abstract class AbstractClassWithAttribute
+    {
+    }
 
     internal class TypeLifetimeManagerWithoutDefaultCtor : ITypeLifetimeManager
     {

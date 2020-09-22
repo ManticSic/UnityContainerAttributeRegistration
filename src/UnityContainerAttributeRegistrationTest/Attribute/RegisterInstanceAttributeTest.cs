@@ -56,7 +56,9 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         [Test]
         [TestCase(typeof(ClassWithLifetimeManagerWithoutInterface))]
         [TestCase(typeof(ClassWithLifetimeManagerWithoutDefaultCtor))]
-        public void TestBuild_InvalidTypeLifetimeManagers(Type to)
+        [TestCase(typeof(StaticClassWithAttribute))]
+        [TestCase(typeof(AbstractClassWithAttribute))]
+        public void TestBuild_InvalidUsage(Type to)
         {
             Scope scope = new Scope();
 
