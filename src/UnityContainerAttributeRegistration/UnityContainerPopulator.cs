@@ -10,6 +10,7 @@ using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration.Adapter;
 using UnityContainerAttributeRegistration.Attribute;
+using UnityContainerAttributeRegistration.Populator;
 
 
 namespace UnityContainerAttributeRegistration
@@ -20,6 +21,7 @@ namespace UnityContainerAttributeRegistration
     public sealed class UnityContainerPopulator
     {
         private readonly IAppDomainAdapter appDomain;
+        private readonly IPopulator TypePopulator;
 
         /// <summary>
         /// Use <see cref="System.AppDomain.CurrentDomain"/> to populate an <see cref="Unity.IUnityContainer" />
@@ -35,6 +37,8 @@ namespace UnityContainerAttributeRegistration
         public UnityContainerPopulator([NotNull] IAppDomainAdapter appDomain)
         {
             this.appDomain = appDomain;
+
+            TypePopulator = new TypePopulator(appDomain);
         }
 
         /// <summary>
@@ -53,63 +57,9 @@ namespace UnityContainerAttributeRegistration
         /// <returns><paramref name="container"/></returns>
         public IUnityContainer Populate([NotNull] IUnityContainer container)
         {
-            RegisterByTypeAttribute(container);
+            TypePopulator.Populate(container);
 
             return container;
-        }
-
-        private void RegisterByTypeAttribute([NotNull] IUnityContainer container)
-        {
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterTypeAttribute>(TypeDefined.Inherit)
-               .ToArray();
-
-            foreach(Type to in typesWithAttribute)
-            {
-                // todo check for to.IsAbstract and to.IsInterface and throw
-
-                RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
-                ITypeLifetimeManager lifetimeManager =
-                    attribute.LifetimeManager == null ? null : GetInstanceByType<ITypeLifetimeManager>(attribute.LifetimeManager);
-
-                container.RegisterType(attribute.From ?? to,
-                                       to,
-                                       lifetimeManager);
-            }
-        }
-
-        [CanBeNull]
-        private T GetInstanceByType<T>([CanBeNull] Type typeLifetimeManagerType)
-        {
-            Type targetType = typeof(T);
-
-            if(typeLifetimeManagerType == null)
-            {
-                throw new ArgumentNullException(nameof(typeLifetimeManagerType));
-            }
-
-            if(!targetType.IsAssignableFrom(typeLifetimeManagerType))
-            {
-                throw new InvalidOperationException(
-                    $"Type {typeLifetimeManagerType.FullName} cannot be assigned from {targetType.FullName}");
-            }
-
-            ConstructorInfo ctor = typeLifetimeManagerType.GetConstructor(Type.EmptyTypes);
-
-            if(ctor == null)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot create instance of ITypeLifetimeManager. No default constructor found for {typeLifetimeManagerType.FullName}");
-            }
-
-            return (T) ctor.Invoke(new object[0]);
-        }
-
-        private IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : System.Attribute
-        {
-            return appDomain.GetAssemblies()
-                            .SelectMany(assembly => assembly.GetTypes())
-                            .Where(type => type.IsDefined(typeof(TAttribute), typeDefined == TypeDefined.Inherit))
-                ;
         }
     }
 }

@@ -12,38 +12,36 @@ using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration;
 using UnityContainerAttributeRegistration.Adapter;
-using UnityContainerAttributeRegistration.Attribute;
 
+using UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses;
 using UnityContainerAttributeRegistrationTest.Helper;
-using UnityContainerAttributeRegistrationTest.Helper.LifetimeManager;
 
 using static NUnit.Framework.Assert;
 
 
-namespace UnityContainerAttributeRegistrationTest
+namespace UnityContainerAttributeRegistrationTest.Attribute
 {
     internal class RegisterInstanceAttributeTest
     {
         [Test]
-        [TestCase(null, typeof(TransientLifetimeManager))]
-        [TestCase(typeof(HierarchicalLifetimeManager), typeof(HierarchicalLifetimeManager))]
-        [TestCase(typeof(SingletonLifetimeManager), typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(TransientLifetimeManager), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ContainerControlledLifetimeManager), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ContainerControlledTransientManager), typeof(ContainerControlledTransientManager))]
-        [TestCase(typeof(ExternallyControlledLifetimeManager), typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(PerResolveLifetimeManager), typeof(PerResolveLifetimeManager))]
-        [TestCase(typeof(PerThreadLifetimeManager), typeof(PerThreadLifetimeManager))]
-        public void TestBuild_TypeLifetimeManagers(Type lifetimeManagerType, Type expectedTypeLifetimeMangerType)
+        [TestCase(typeof(Default), typeof(Default), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager), typeof(IAnyInterface), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassInheritAbstractWithoutLifetimeManager), typeof(AnyAbstractClass), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassInheritClassWithoutLifetimeManager), typeof(AnyClass), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager), typeof(IAnyInterface), typeof(HierarchicalLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager), typeof(IAnyInterface), typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager), typeof(IAnyInterface), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager), typeof(IAnyInterface), typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager), typeof(IAnyInterface), typeof(ContainerControlledTransientManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager), typeof(IAnyInterface), typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager),typeof(IAnyInterface),  typeof(PerResolveLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager),typeof(IAnyInterface),  typeof(PerThreadLifetimeManager))]
+        [TestCase(typeof(ClassWithLifetimeManager), typeof(ClassWithLifetimeManager), typeof(TransientLifetimeManager))]
+        public void TestBuild_TypeLifetimeManagers(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
         {
             Scope scope = new Scope();
 
-            Type type = new FakeType("Test",
-                                     "ClassA",
-                                     scope.Assembly,
-                                     attributes: new RegisterTypeAttribute(null, lifetimeManagerType));
-
-            scope.AddType(type);
+            scope.AddType(to);
 
             IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
 
@@ -52,22 +50,17 @@ namespace UnityContainerAttributeRegistrationTest
             AreEqual(2, result.Count);
 
             IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], type, type, expectedTypeLifetimeMangerType));
+            IsTrue(IsExpectedRegisteredContainer(result[1], expectedFrom, to, expectedTypeLifetimeMangerType));
         }
 
         [Test]
-        [TestCase(typeof(TypeLifetimeManagerWithoutDefaultCtor))]
-        [TestCase(typeof(LifetimeManagerWithoutInterface))]
-        public void TestBuild_InvalidTypeLifetimeManagers(Type invalidLifetimeManagerType)
+        [TestCase(typeof(ClassWithLifetimeManagerWithoutInterface))]
+        [TestCase(typeof(ClassWithLifetimeManagerWithoutDefaultCtor))]
+        public void TestBuild_InvalidTypeLifetimeManagers(Type to)
         {
             Scope scope = new Scope();
 
-            Type type = new FakeType("Test",
-                                     "ClassA",
-                                     scope.Assembly,
-                                     attributes: new RegisterTypeAttribute(null, invalidLifetimeManagerType));
-
-            scope.AddType(type);
+            scope.AddType(to);
 
             Throws<InvalidOperationException>(() => new UnityContainerPopulator(scope.GetAppDomain()).Populate());
         }
@@ -75,20 +68,11 @@ namespace UnityContainerAttributeRegistrationTest
         [Test]
         public void TestBuild_WithCustomContainer()
         {
-            Mock<Assembly>          assemblyMock  = new Mock<Assembly>();
-            Mock<IAppDomainAdapter> appDomainMock = new Mock<IAppDomainAdapter>();
-
-            assemblyMock.Setup(mock => mock.GetTypes())
-                        .Returns(new Type[0]);
-            appDomainMock.Setup(mock => mock.GetAssemblies())
-                         .Returns(new List<Assembly>
-                                  {
-                                      assemblyMock.Object
-                                  }.ToArray());
+            Scope scope = new Scope();
 
             IUnityContainer container = new UnityContainer();
 
-            IUnityContainer result = new UnityContainerPopulator().Populate(container);
+            IUnityContainer result = new UnityContainerPopulator(scope.GetAppDomain()).Populate(container);
 
             AreSame(container, result);
         }
@@ -102,12 +86,12 @@ namespace UnityContainerAttributeRegistrationTest
         }
 
         private bool IsExpectedRegisteredContainer(IContainerRegistration registration,
-                                                   Type                   expectedRegisteredType,
-                                                   Type                   expectedMappedToType,
+                                                   Type                   expectedFrom,
+                                                   Type                   expectedTo,
                                                    Type                   expectedTypeLifetimeManagerType)
         {
-            bool registeredType  = registration.RegisteredType == expectedRegisteredType;
-            bool mappedToType    = registration.MappedToType == expectedMappedToType;
+            bool registeredType  = registration.RegisteredType == expectedFrom;
+            bool mappedToType    = registration.MappedToType == expectedTo;
             bool lifetimeManager = registration.LifetimeManager.GetType() == expectedTypeLifetimeManagerType;
 
             return registeredType && mappedToType && lifetimeManager;
