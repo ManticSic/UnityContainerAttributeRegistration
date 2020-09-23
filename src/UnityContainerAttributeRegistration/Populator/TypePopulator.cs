@@ -16,25 +16,25 @@ using UnityContainerAttributeRegistration.Exention;
 namespace UnityContainerAttributeRegistration.Populator
 {
     /// <summary>
-    /// Populator for the <see cref="UnityContainerAttributeRegistration.Attribute.RegisterTypeAttribute"/>.
+    ///     Populator for the <see cref="UnityContainerAttributeRegistration.Attribute.RegisterTypeAttribute" />.
     /// </summary>
     internal class TypePopulator : Populator
     {
         /// <summary>
-        /// ctor
+        ///     ctor
         /// </summary>
         /// <param name="appDomain">
-        /// Used <see cref="IAppDomainAdapter"/> to find all candidates using <see cref="RegisterTypeAttribute"/>
+        ///     Used <see cref="IAppDomainAdapter" /> to find all candidates using <see cref="RegisterTypeAttribute" />
         /// </param>
         public TypePopulator(IAppDomainAdapter appDomain) : base(appDomain)
         {
         }
 
         /// <summary>
-        /// Populate the passed <paramref name="container"/>.
+        ///     Populate the passed <paramref name="container" />.
         /// </summary>
-        /// <param name="container"><see cref="IUnityContainer"/> to populate.</param>
-        /// <returns>Passed <paramref name="container"/>.</returns>
+        /// <param name="container"><see cref="IUnityContainer" /> to populate.</param>
+        /// <returns>Passed <paramref name="container" />.</returns>
         /// <exception cref="InvalidOperationException">Class type must not be static or abstract.</exception>
         public override IUnityContainer Populate(IUnityContainer container)
         {
@@ -45,7 +45,8 @@ namespace UnityContainerAttributeRegistration.Populator
             {
                 if(to.IsStatic() || to.IsAbstract)
                 {
-                    throw new InvalidOperationException($"Class type must not be static or abstract to be used with RegisterTypeAttribute: {to.FullName}");
+                    throw new InvalidOperationException(
+                        $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {to.FullName}");
                 }
 
                 RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
@@ -60,12 +61,12 @@ namespace UnityContainerAttributeRegistration.Populator
         }
 
         /// <summary>
-        /// Create an instance for <paramref name="objectType"/>.
+        ///     Create an instance for <paramref name="objectType" />.
         /// </summary>
-        /// <param name="objectType"><see cref="Type"/> used to create an instance.</param>
-        /// <typeparam name="T"><paramref name="objectType"/> must be type-equal to, inherit or implement <typeparamref name="T"/>.</typeparam>
-        /// <returns>New instance of <paramref name="objectType"/> as <typeparamref name="T"/>.</returns>
-        /// <exception cref="InvalidOperationException">Cannot create an instance of <paramref name="objectType" />. Whether <paramref name="objectType"/> is not type-equal, does not inherit or implement <typeparamref name="T"/> or has no default constructor.</exception>
+        /// <param name="objectType"><see cref="Type" /> used to create an instance.</param>
+        /// <typeparam name="T"><paramref name="objectType" /> must be type-equal to, inherit or implement <typeparamref name="T" />.</typeparam>
+        /// <returns>New instance of <paramref name="objectType" /> as <typeparamref name="T" />.</returns>
+        /// <exception cref="InvalidOperationException">Cannot create an instance of <paramref name="objectType" />. Whether <paramref name="objectType" /> is not type-equal, does not inherit or implement <typeparamref name="T" /> or has no default constructor.</exception>
         [NotNull]
         private T GetInstanceByType<T>([NotNull] Type objectType)
         {
@@ -73,8 +74,7 @@ namespace UnityContainerAttributeRegistration.Populator
 
             if(!targetType.IsAssignableFrom(objectType))
             {
-                throw new InvalidOperationException(
-                    $"Type {objectType.FullName} cannot be assigned from {targetType.FullName}");
+                throw new InvalidOperationException($"Type {objectType.FullName} cannot be assigned from {targetType.FullName}");
             }
 
             ConstructorInfo ctor = objectType.GetConstructor(Type.EmptyTypes);

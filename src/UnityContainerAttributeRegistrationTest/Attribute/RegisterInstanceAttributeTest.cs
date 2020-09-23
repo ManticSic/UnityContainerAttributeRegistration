@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-
-using Moq;
 
 using NUnit.Framework;
 
@@ -11,7 +8,6 @@ using Unity;
 using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration;
-using UnityContainerAttributeRegistration.Adapter;
 
 using UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses;
 using UnityContainerAttributeRegistrationTest.Helper;
@@ -25,17 +21,26 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
     {
         [Test]
         [TestCase(typeof(Default), typeof(Default), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager), typeof(IAnyInterface), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager), typeof(IAnyInterface),
+                  typeof(TransientLifetimeManager))]
         [TestCase(typeof(ClassInheritAbstractWithoutLifetimeManager), typeof(AnyAbstractClass), typeof(TransientLifetimeManager))]
         [TestCase(typeof(ClassInheritClassWithoutLifetimeManager), typeof(AnyClass), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager), typeof(IAnyInterface), typeof(HierarchicalLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager), typeof(IAnyInterface), typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager), typeof(IAnyInterface), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager), typeof(IAnyInterface), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager), typeof(IAnyInterface), typeof(ContainerControlledTransientManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager), typeof(IAnyInterface), typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager),typeof(IAnyInterface),  typeof(PerResolveLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager),typeof(IAnyInterface),  typeof(PerThreadLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager), typeof(IAnyInterface),
+                  typeof(HierarchicalLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager), typeof(IAnyInterface),
+                  typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager), typeof(IAnyInterface),
+                  typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager), typeof(IAnyInterface),
+                  typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager), typeof(IAnyInterface),
+                  typeof(ContainerControlledTransientManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager), typeof(IAnyInterface),
+                  typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager), typeof(IAnyInterface),
+                  typeof(PerResolveLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager), typeof(IAnyInterface),
+                  typeof(PerThreadLifetimeManager))]
         [TestCase(typeof(ClassWithLifetimeManager), typeof(ClassWithLifetimeManager), typeof(TransientLifetimeManager))]
         public void TestPopulate(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
         {
