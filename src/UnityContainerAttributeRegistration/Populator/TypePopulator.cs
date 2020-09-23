@@ -45,15 +45,10 @@ namespace UnityContainerAttributeRegistration.Populator
             return container;
         }
 
-        [CanBeNull]
-        private T GetInstanceByType<T>([CanBeNull] Type objectType)
+        [NotNull]
+        private T GetInstanceByType<T>([NotNull] Type objectType)
         {
             Type targetType = typeof(T);
-
-            if(objectType == null)
-            {
-                throw new ArgumentNullException(nameof(objectType));
-            }
 
             if(!targetType.IsAssignableFrom(objectType))
             {
