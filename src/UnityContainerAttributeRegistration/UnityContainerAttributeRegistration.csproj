@@ -19,17 +19,18 @@
         <RepositoryUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <NoWarn />
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningsAsErrors />
-      <NoWarn />
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningsAsErrors />
-      <NoWarn />
     </PropertyGroup>
 
     <ItemGroup>
