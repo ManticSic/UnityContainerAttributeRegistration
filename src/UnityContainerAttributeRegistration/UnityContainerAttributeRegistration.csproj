@@ -13,6 +13,7 @@
         <PackageTags>dependency-injection,unity-containers,unity,container,containers,builder-plate,register-types</PackageTags>
         <Copyright>Copyright © 2020 Darius Weber</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
 
         <Authors>Darius Weber</Authors>
         <PackageProjectUrl>https://github.com/ManticSic/UnityContainerAttributeRegistration</PackageProjectUrl>
