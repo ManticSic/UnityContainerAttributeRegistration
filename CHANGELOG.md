@@ -1,8 +1,16 @@
 ﻿# Changelog
 
+## 0.1.
+### Code
+- added: XMLDocumentation for all `public`, `internal` and `protected` types, fields, properties and methods
+- changed: improve testing
+
+### CI / CD
+- added: XMLDocumentation to nuget package
+
 ## 0.1.2 (2020-09-20)
 ### Code
-- added: XMLDocumentation for public types
+- added: XMLDocumentation for `public` types
 - changed: name of `UnityContainerBuilder` to `UnityContainerPopulator`
     - changed: `UnityContainerPopulator` is no longer static
     - changed: provide AppDomain by wrapper class
