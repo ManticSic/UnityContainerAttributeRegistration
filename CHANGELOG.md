@@ -1,6 +1,6 @@
 ﻿# Changelog
 
-## 0.1.
+## 0.1.3
 ### Code
 - added: XMLDocumentation for all `public`, `internal` and `protected` types, fields, properties and methods
 - changed: improve testing
