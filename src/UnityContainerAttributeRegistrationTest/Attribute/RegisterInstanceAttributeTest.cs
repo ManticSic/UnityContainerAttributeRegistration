@@ -20,28 +20,45 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
     internal class RegisterInstanceAttributeTest
     {
         [Test]
-        [TestCase(typeof(Default), typeof(Default), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(Default),
+                  typeof(Default),
                   typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassInheritAbstractWithoutLifetimeManager), typeof(AnyAbstractClass), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassInheritClassWithoutLifetimeManager), typeof(AnyClass), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager),
+                  typeof(IAnyInterface),
+                  typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassInheritAbstractWithoutLifetimeManager),
+                  typeof(AnyAbstractClass),
+                  typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassInheritClassWithoutLifetimeManager),
+                  typeof(AnyClass),
+                  typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(HierarchicalLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager),
+                  typeof(IAnyInterface),
                   typeof(ContainerControlledTransientManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(PerResolveLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager), typeof(IAnyInterface),
+        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager),
+                  typeof(IAnyInterface),
                   typeof(PerThreadLifetimeManager))]
-        [TestCase(typeof(ClassWithLifetimeManager), typeof(ClassWithLifetimeManager), typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ClassWithLifetimeManager),
+                  typeof(ClassWithLifetimeManager),
+                  typeof(TransientLifetimeManager))]
         public void TestPopulate(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
         {
             Scope scope = new Scope();
