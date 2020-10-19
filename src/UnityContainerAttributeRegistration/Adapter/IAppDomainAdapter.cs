@@ -13,6 +13,6 @@ namespace UnityContainerAttributeRegistration.Adapter
         ///     Provide <see cref="Assembly" />s of an AppDomain.
         /// </summary>
         /// <returns><see cref="Assembly" />s which are used to populate.</returns>
-        public IList<Assembly> GetAssemblies();
+        IList<Assembly> GetAssemblies();
     }
 }

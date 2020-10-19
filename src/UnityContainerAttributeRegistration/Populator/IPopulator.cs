@@ -13,6 +13,6 @@ namespace UnityContainerAttributeRegistration.Populator
         /// </summary>
         /// <param name="container"><see cref="IUnityContainer" /> to populate.</param>
         /// <returns>Passed <paramref name="container" />.</returns>
-        public IUnityContainer Populate(IUnityContainer container);
+        IUnityContainer Populate(IUnityContainer container);
     }
 }
