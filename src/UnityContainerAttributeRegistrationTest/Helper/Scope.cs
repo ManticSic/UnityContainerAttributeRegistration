@@ -5,7 +5,7 @@ using System.Reflection;
 
 using Moq;
 
-using UnityContainerAttributeRegistration.Adapter;
+using UnityContainerAttributeRegistration.Provider;
 
 
 namespace UnityContainerAttributeRegistrationTest.Helper
@@ -13,14 +13,14 @@ namespace UnityContainerAttributeRegistrationTest.Helper
     internal class Scope
     {
         private readonly Mock<Assembly>          assemblyMock;
-        private readonly Mock<IAppDomainAdapter> appDomainMock;
+        private readonly Mock<IAssemblyProvider> appDomainMock;
 
         private readonly IList<Type> typesInAssembly = new List<Type>();
 
         public Scope()
         {
             assemblyMock  = new Mock<Assembly>();
-            appDomainMock = new Mock<IAppDomainAdapter>();
+            appDomainMock = new Mock<IAssemblyProvider>();
         }
 
         public Assembly Assembly
@@ -33,7 +33,7 @@ namespace UnityContainerAttributeRegistrationTest.Helper
             typesInAssembly.Add(type);
         }
 
-        public IAppDomainAdapter GetAppDomain()
+        public IAssemblyProvider GetAppDomain()
         {
             assemblyMock.Setup(mock => mock.GetTypes())
                         .Returns(typesInAssembly.ToArray());

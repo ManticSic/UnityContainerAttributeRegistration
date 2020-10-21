@@ -2,8 +2,8 @@
 
 using Unity;
 
-using UnityContainerAttributeRegistration.Adapter;
 using UnityContainerAttributeRegistration.Populator;
+using UnityContainerAttributeRegistration.Provider;
 
 
 namespace UnityContainerAttributeRegistration
@@ -13,21 +13,21 @@ namespace UnityContainerAttributeRegistration
     /// </summary>
     public sealed class UnityContainerPopulator
     {
-        private readonly IAppDomainAdapter appDomain;
+        private readonly IAssemblyProvider appDomain;
         private readonly IPopulator        TypePopulator;
 
         /// <summary>
         ///     Use <see cref="System.AppDomain.CurrentDomain" /> to populate an <see cref="Unity.IUnityContainer" />
         /// </summary>
-        public UnityContainerPopulator() : this(new AppDomainAdapter())
+        public UnityContainerPopulator() : this(new AssemblyProvider())
         {
         }
 
         /// <summary>
         ///     Use <paramref name="appDomain" /> to populate an <see cref="Unity.IUnityContainer" />
         /// </summary>
-        /// <param name="appDomain">Custom <see cref="UnityContainerAttributeRegistration.Adapter.IAppDomainAdapter" /></param>
-        public UnityContainerPopulator([NotNull] IAppDomainAdapter appDomain)
+        /// <param name="appDomain">Custom <see cref="IAssemblyProvider" /></param>
+        public UnityContainerPopulator([NotNull] IAssemblyProvider appDomain)
         {
             this.appDomain = appDomain;
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 using Unity;
 
-using UnityContainerAttributeRegistration.Adapter;
+using UnityContainerAttributeRegistration.Provider;
 
 
 namespace UnityContainerAttributeRegistration.Populator
@@ -14,15 +14,15 @@ namespace UnityContainerAttributeRegistration.Populator
     /// </summary>
     internal abstract class Populator : IPopulator
     {
-        private readonly IAppDomainAdapter appDomain;
+        private readonly IAssemblyProvider assemblyProvider;
 
         /// <summary>
         ///     ctor
         /// </summary>
-        /// <param name="appDomain">Used <see cref="IAppDomainAdapter" /> for searching for candidates.</param>
-        protected Populator(IAppDomainAdapter appDomain)
+        /// <param name="assemblyProvider">Used <see cref="IAssemblyProvider" /> for searching for candidates.</param>
+        protected Populator(IAssemblyProvider assemblyProvider)
         {
-            this.appDomain = appDomain;
+            this.assemblyProvider = assemblyProvider;
         }
 
         /// <inheritdoc cref="IPopulator.Populate" />
@@ -33,10 +33,10 @@ namespace UnityContainerAttributeRegistration.Populator
         /// </summary>
         /// <param name="typeDefined">Using inheritance or not.</param>
         /// <typeparam name="TAttribute"><see cref="System.Attribute" /> used by searched <see cref="Type" />s.</typeparam>
-        /// <returns>List of all <see cref="Type" />s in an <see cref="IAppDomainAdapter" /> using <typeparamref name="TAttribute" />.</returns>
+        /// <returns>List of all <see cref="Type" />s in an <see cref="IAssemblyProvider" /> using <typeparamref name="TAttribute" />.</returns>
         protected IEnumerable<Type> GetTypesWith<TAttribute>(TypeDefined typeDefined) where TAttribute : System.Attribute
         {
-            return appDomain.GetAssemblies()
+            return assemblyProvider.GetAssemblies()
                             .SelectMany(assembly => assembly.GetTypes())
                             .Where(type => type.IsDefined(typeof(TAttribute), typeDefined == TypeDefined.Inherit))
                 ;

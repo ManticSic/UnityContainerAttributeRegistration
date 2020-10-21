@@ -8,9 +8,9 @@ using JetBrains.Annotations;
 using Unity;
 using Unity.Lifetime;
 
-using UnityContainerAttributeRegistration.Adapter;
 using UnityContainerAttributeRegistration.Attribute;
 using UnityContainerAttributeRegistration.Exention;
+using UnityContainerAttributeRegistration.Provider;
 
 
 namespace UnityContainerAttributeRegistration.Populator
@@ -23,10 +23,10 @@ namespace UnityContainerAttributeRegistration.Populator
         /// <summary>
         ///     ctor
         /// </summary>
-        /// <param name="appDomain">
-        ///     Used <see cref="IAppDomainAdapter" /> to find all candidates using <see cref="RegisterTypeAttribute" />
+        /// <param name="assemblyProvider">
+        ///     Used <see cref="IAssemblyProvider" /> to find all candidates using <see cref="RegisterTypeAttribute" />
         /// </param>
-        public TypePopulator(IAppDomainAdapter appDomain) : base(appDomain)
+        public TypePopulator(IAssemblyProvider assemblyProvider) : base(assemblyProvider)
         {
         }
 
