@@ -17,7 +17,7 @@ using static NUnit.Framework.Assert;
 
 namespace UnityContainerAttributeRegistrationTest.Attribute
 {
-    internal class RegisterInstanceAttributeTest
+    internal class RegisterTypeAttributeTest
     {
         [Test]
         [TestCase(typeof(Default),
