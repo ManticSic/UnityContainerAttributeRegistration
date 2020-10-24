@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +9,7 @@ using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration;
 
-using UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses;
+using UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestClasses;
 using UnityContainerAttributeRegistrationTest.Helper;
 
 using static NUnit.Framework.Assert;
@@ -17,74 +17,44 @@ using static NUnit.Framework.Assert;
 
 namespace UnityContainerAttributeRegistrationTest.Attribute
 {
-    internal class RegisterInstanceAttributeTest
+    public class RegisterInstanceAttributeTest : TestBase
     {
         [Test]
-        [TestCase(typeof(Default),
-                  typeof(Default),
-                  typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithoutLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassInheritAbstractWithoutLifetimeManager),
-                  typeof(AnyAbstractClass),
-                  typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassInheritClassWithoutLifetimeManager),
-                  typeof(AnyClass),
-                  typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithHierarchicalLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(HierarchicalLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithSingletonLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithTransientLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledLifetimeManager),
-                  typeof(IAnyInterface),
+        [TestCase(typeof(DefaultProvider), typeof(AnyClass), typeof(AnyClass), typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithoutLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
                   typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithContainerControlledTransientManager),
-                  typeof(IAnyInterface),
-                  typeof(ContainerControlledTransientManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithExternallyControlledLifetimeManager),
-                  typeof(IAnyInterface),
+        [TestCase(typeof(ProviderUsingFromWithSingletonLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithContainerControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithExternallyControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
                   typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerResolveLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(PerResolveLifetimeManager))]
-        [TestCase(typeof(ClassImplementsInterfaceWithPerThreadLifetimeManager),
-                  typeof(IAnyInterface),
-                  typeof(PerThreadLifetimeManager))]
-        [TestCase(typeof(ClassWithLifetimeManager),
-                  typeof(ClassWithLifetimeManager),
-                  typeof(TransientLifetimeManager))]
-        public void TestPopulate(Type to, Type expectedFrom, Type expectedTypeLifetimeMangerType)
+        [TestCase(typeof(ProviderWithExternallyControlledLifetimeManager), typeof(AnyClass), typeof(AnyClass),
+                  typeof(ExternallyControlledLifetimeManager))]
+        public void TestPopulate(Type providerType, Type expectedFrom, Type expectedTo, Type expectedInstanceLifetimeManagerType)
         {
             Scope scope = new Scope();
 
-            scope.AddType(to);
+            scope.AddType(providerType);
 
             IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
 
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
             AreEqual(2, result.Count);
-
             IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], expectedFrom, to, expectedTypeLifetimeMangerType));
+            IsTrue(IsExpectedRegisteredContainer(result[1], expectedFrom, expectedTo, expectedInstanceLifetimeManagerType));
         }
 
         [Test]
-        [TestCase(typeof(ClassWithLifetimeManagerWithoutInterface))]
-        [TestCase(typeof(ClassWithLifetimeManagerWithoutDefaultCtor))]
         [TestCase(typeof(StaticClassWithAttribute))]
         [TestCase(typeof(AbstractClassWithAttribute))]
-        public void TestPopulate_InvalidUsage(Type to)
+        [TestCase(typeof(ProviderWithLifetimemanagerWithoutInterface))]
+        public void TestPopulate_InvalidUsage(Type providerType)
         {
             Scope scope = new Scope();
 
-            scope.AddType(to);
+            scope.AddType(providerType);
 
             Throws<InvalidOperationException>(() => new UnityContainerPopulator(scope.GetAppDomain()).Populate());
         }
@@ -99,26 +69,6 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             IUnityContainer result = new UnityContainerPopulator(scope.GetAppDomain()).Populate(container);
 
             AreSame(container, result);
-        }
-
-        private bool IsUnityContainerRegistration(IContainerRegistration registration)
-        {
-            bool registeredType = registration.RegisteredType == typeof(IUnityContainer);
-            bool mappedToType   = registration.MappedToType == typeof(UnityContainer);
-
-            return registeredType && mappedToType;
-        }
-
-        private bool IsExpectedRegisteredContainer(IContainerRegistration registration,
-                                                   Type                   expectedFrom,
-                                                   Type                   expectedTo,
-                                                   Type                   expectedTypeLifetimeManagerType)
-        {
-            bool registeredType  = registration.RegisteredType == expectedFrom;
-            bool mappedToType    = registration.MappedToType == expectedTo;
-            bool lifetimeManager = registration.LifetimeManager.GetType() == expectedTypeLifetimeManagerType;
-
-            return registeredType && mappedToType && lifetimeManager;
         }
     }
 }
