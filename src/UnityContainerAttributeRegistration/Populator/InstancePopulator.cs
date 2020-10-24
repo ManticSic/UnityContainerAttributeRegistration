@@ -15,6 +15,9 @@ using UnityContainerAttributeRegistration.Exention;
 
 namespace UnityContainerAttributeRegistration.Populator
 {
+    /// <summary>
+    ///     Populator for the <see cref="UnityContainerAttributeRegistration.Attribute.RegisterInstanceAttribute" />.
+    /// </summary>
     internal class InstancePopulator : Populator
     {
         /// <summary>
