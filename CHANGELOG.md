@@ -1,5 +1,24 @@
 ﻿# Changelog
 
+## 0.2.0 (2020-10-24)
+### Code
+- added: Attributes to register concrete instances
+- changed: Rename `AppDomainAdapter` to `AssemblyProvider`
+
+### Project
+- changed: Library is now compiled as .Net Standard 2.0, 2.1 and .Net Core 2.0 and compatible with 
+    - .Net Core 2.0, 3.0
+    - .Net Framework 4.6.1
+    - Mono 5.4, 6.4
+    - Xamarin.iOS 10.14, 12.16
+    - Xamarin.Max 3.8, 5.16
+    - Xamarin.Android 8.0, 10.0
+    - UWP 10.0.16299
+    - Unity 2018.1
+ - changed: XML Doc is now only requiered for release builds
+ - changed: extend docs
+ - fixed: Readme with old docs
+
 ## 0.1.3 (2020-09-24)
 ### Code
 - added: XMLDocumentation for all `public`, `internal` and `protected` types, fields, properties and methods
@@ -37,7 +56,7 @@
 
 
 ## 0.1.0 (2020-09-20)
-### Code:
+### Code
 - changed: default used `ITypeLifetimeManager`
 
 ### Project
@@ -48,7 +67,7 @@
 - removed: deployment to github packages
 
 ## 0.1.0-alpha (2020-09-20)
-### Code:
+### Code
 - added: `RegisterTypeAttribute`
 - added: `UnityContainerBuilder`
 - added: tests for `RegisterTypeAttribute`
