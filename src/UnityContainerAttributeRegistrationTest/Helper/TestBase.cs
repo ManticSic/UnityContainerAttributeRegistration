@@ -16,9 +16,9 @@ namespace UnityContainerAttributeRegistrationTest.Helper
         }
 
         protected bool IsExpectedRegisteredContainer(IContainerRegistration registration,
-                                                   Type                   expectedFrom,
-                                                   Type                   expectedTo,
-                                                   Type                   expectedTypeLifetimeManagerType)
+                                                     Type                   expectedFrom,
+                                                     Type                   expectedTo,
+                                                     Type                   expectedTypeLifetimeManagerType)
         {
             bool registeredType  = registration.RegisteredType == expectedFrom;
             bool mappedToType    = registration.MappedToType == expectedTo;

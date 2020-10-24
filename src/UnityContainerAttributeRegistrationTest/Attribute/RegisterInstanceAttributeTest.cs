@@ -14,17 +14,23 @@ using UnityContainerAttributeRegistrationTest.Helper;
 
 using static NUnit.Framework.Assert;
 
+
 namespace UnityContainerAttributeRegistrationTest.Attribute
 {
     public class RegisterInstanceAttributeTest : TestBase
     {
         [Test]
         [TestCase(typeof(DefaultProvider), typeof(AnyClass), typeof(AnyClass), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ProviderUsingFromWithoutLifetimeManager), typeof(IAnyInterface), typeof(AnyClass), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ProviderUsingFromWithSingletonLifetimeManager), typeof(IAnyInterface), typeof(AnyClass), typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(ProviderUsingFromWithContainerControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ProviderUsingFromWithExternallyControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass), typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(ProviderWithExternallyControlledLifetimeManager), typeof(AnyClass), typeof(AnyClass), typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithoutLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithSingletonLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithContainerControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ProviderUsingFromWithExternallyControlledLifetimeManager), typeof(IAnyInterface), typeof(AnyClass),
+                  typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(ProviderWithExternallyControlledLifetimeManager), typeof(AnyClass), typeof(AnyClass),
+                  typeof(ExternallyControlledLifetimeManager))]
         public void TestPopulate(Type providerType, Type expectedFrom, Type expectedTo, Type expectedInstanceLifetimeManagerType)
         {
             Scope scope = new Scope();

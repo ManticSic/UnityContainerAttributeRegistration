@@ -9,7 +9,7 @@ namespace UnityContainerAttributeRegistration.Attribute
     ///     Mark a property to be registered to an <see cref="Unity.IUnityContainer" />
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class RegisterInstanceAttribute: System.Attribute
+    public class RegisterInstanceAttribute : System.Attribute
     {
         /// <summary>
         ///     Candidate for registration to <see cref="Unity" />.

@@ -13,8 +13,8 @@ namespace UnityContainerAttributeRegistration
     /// </summary>
     public sealed class UnityContainerPopulator
     {
-        private readonly IPopulator        typePopulator;
-        private readonly IPopulator        instancePopulator;
+        private readonly IPopulator typePopulator;
+        private readonly IPopulator instancePopulator;
 
         /// <summary>
         ///     Use <see cref="System.AppDomain.CurrentDomain" /> to populate an <see cref="Unity.IUnityContainer" />
@@ -29,7 +29,7 @@ namespace UnityContainerAttributeRegistration
         /// <param name="appDomain">Custom <see cref="IAssemblyProvider" /></param>
         public UnityContainerPopulator([NotNull] IAssemblyProvider appDomain)
         {
-            typePopulator = new TypePopulator(appDomain);
+            typePopulator     = new TypePopulator(appDomain);
             instancePopulator = new InstancePopulator(appDomain);
         }
 

@@ -51,10 +51,10 @@ namespace UnityContainerAttributeRegistration.Populator
         }
 
         /// <summary>
-        /// Create a list of <see cref="InstanceToRegister"/> depending on class marked with <see cref="RegisterInstanceProviderAttribute"/>
+        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterInstanceProviderAttribute" />
         /// </summary>
-        /// <param name="container"><see cref="IUnityContainer"/> to resolve <paramref name="providerClassType"/></param>
-        /// <param name="providerClassType">Class type used to search for <see cref="RegisterInstanceAttribute"/></param>
+        /// <param name="container"><see cref="IUnityContainer" /> to resolve <paramref name="providerClassType" /></param>
+        /// <param name="providerClassType">Class type used to search for <see cref="RegisterInstanceAttribute" /></param>
         /// <returns>List of instances to register with all needed parameters</returns>
         /// <exception cref="InvalidOperationException"><paramref name="providerClassType" /> type must not be static or abstract.</exception>
         private IEnumerable<InstanceToRegister> GetInstancesToRegisterFor(IUnityContainer container, Type providerClassType)
@@ -65,24 +65,28 @@ namespace UnityContainerAttributeRegistration.Populator
                     $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {providerClassType.FullName}");
             }
 
-            object providerClassInstance = container.Resolve(providerClassType);
-            PropertyInfo[] properties = providerClassType.GetProperties();
+            object         providerClassInstance = container.Resolve(providerClassType);
+            PropertyInfo[] properties            = providerClassType.GetProperties();
 
-            return properties.Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterInstanceAttribute)))
-                             .Select(info =>
-                                     {
-                                         object instance = info.GetValue(providerClassInstance);
-                                         RegisterInstanceAttribute attribute = info.GetCustomAttribute<RegisterInstanceAttribute>();
-                                         Type from = attribute.From;
-                                         IInstanceLifetimeManager lifetimeManager = attribute.LifetimeManager == null ? null : GetInstanceByType<IInstanceLifetimeManager>(attribute.LifetimeManager);
+            return properties
+                  .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterInstanceAttribute)))
+                  .Select(info =>
+                          {
+                              object                    instance  = info.GetValue(providerClassInstance);
+                              RegisterInstanceAttribute attribute = info.GetCustomAttribute<RegisterInstanceAttribute>();
+                              Type                      from      = attribute.From;
+                              IInstanceLifetimeManager lifetimeManager =
+                                  attribute.LifetimeManager == null
+                                      ? null
+                                      : GetInstanceByType<IInstanceLifetimeManager>(attribute.LifetimeManager);
 
-                                         return new InstanceToRegister(instance, from, lifetimeManager);
-                                    })
-                             .ToList();
+                              return new InstanceToRegister(instance, from, lifetimeManager);
+                          })
+                  .ToList();
         }
 
         /// <summary>
-        /// Wrapper to regsiter isntances
+        ///     Wrapper to regsiter isntances
         /// </summary>
         private sealed class InstanceToRegister
         {
@@ -96,19 +100,19 @@ namespace UnityContainerAttributeRegistration.Populator
             }
 
             /// <summary>
-            /// Concrete instance to register
+            ///     Concrete instance to register
             /// </summary>
             [CanBeNull]
             public object Instance { get; }
 
             /// <summary>
-            /// Requested type
+            ///     Requested type
             /// </summary>
             [CanBeNull]
             public Type Type { get; }
 
             /// <summary>
-            /// Used lifetime manager
+            ///     Used lifetime manager
             /// </summary>
             [CanBeNull]
             public IInstanceLifetimeManager LifetimeManager { get; }
