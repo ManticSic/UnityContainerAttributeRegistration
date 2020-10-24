@@ -17,7 +17,7 @@ using static NUnit.Framework.Assert;
 
 namespace UnityContainerAttributeRegistrationTest.Attribute
 {
-    internal class RegisterTypeAttributeTest
+    internal class RegisterTypeAttributeTest : TestBase
     {
         [Test]
         [TestCase(typeof(Default),
@@ -99,26 +99,6 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             IUnityContainer result = new UnityContainerPopulator(scope.GetAppDomain()).Populate(container);
 
             AreSame(container, result);
-        }
-
-        private bool IsUnityContainerRegistration(IContainerRegistration registration)
-        {
-            bool registeredType = registration.RegisteredType == typeof(IUnityContainer);
-            bool mappedToType   = registration.MappedToType == typeof(UnityContainer);
-
-            return registeredType && mappedToType;
-        }
-
-        private bool IsExpectedRegisteredContainer(IContainerRegistration registration,
-                                                   Type                   expectedFrom,
-                                                   Type                   expectedTo,
-                                                   Type                   expectedTypeLifetimeManagerType)
-        {
-            bool registeredType  = registration.RegisteredType == expectedFrom;
-            bool mappedToType    = registration.MappedToType == expectedTo;
-            bool lifetimeManager = registration.LifetimeManager.GetType() == expectedTypeLifetimeManagerType;
-
-            return registeredType && mappedToType && lifetimeManager;
         }
     }
 }
