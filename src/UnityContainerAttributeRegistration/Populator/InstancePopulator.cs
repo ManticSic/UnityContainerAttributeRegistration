@@ -36,7 +36,7 @@ namespace UnityContainerAttributeRegistration.Populator
         /// <exception cref="InvalidOperationException">Class type must not be static or abstract.</exception>
         public override IUnityContainer Populate(IUnityContainer container)
         {
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterInstanceProviderAttribute>(TypeDefined.Inherit)
+            IList<Type> typesWithAttribute = GetTypesWith<RegisterProviderAttribute>(TypeDefined.Inherit)
                .ToList();
 
             IEnumerable<InstanceToRegister> instancesToRegister =
@@ -54,7 +54,7 @@ namespace UnityContainerAttributeRegistration.Populator
         }
 
         /// <summary>
-        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterInstanceProviderAttribute" />
+        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterProviderAttribute" />
         /// </summary>
         /// <param name="container"><see cref="IUnityContainer" /> to resolve <paramref name="providerClassType" /></param>
         /// <param name="providerClassType">Class type used to search for <see cref="RegisterInstanceAttribute" /></param>

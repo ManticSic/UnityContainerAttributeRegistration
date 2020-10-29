@@ -7,7 +7,7 @@ namespace UnityContainerAttributeRegistration.Attribute
     ///     Mark a type to be a provider for <see cref="RegisterInstanceAttribute" />
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegisterInstanceProviderAttribute : System.Attribute
+    public class RegisterProviderAttribute : System.Attribute
     {
     }
 }
