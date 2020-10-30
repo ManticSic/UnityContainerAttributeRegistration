@@ -71,8 +71,8 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
 
             AreEqual(2, result.Count);
 
-            IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], expectedFrom, to, expectedTypeLifetimeMangerType));
+            IsUnityContainerRegistration(result[0]);
+            IsExpectedRegisteredContainer(result[1], expectedFrom, to, expectedTypeLifetimeMangerType);
         }
 
         [Test]

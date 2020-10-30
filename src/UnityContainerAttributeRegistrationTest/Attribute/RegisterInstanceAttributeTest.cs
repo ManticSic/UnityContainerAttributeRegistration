@@ -42,8 +42,8 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             IList<IContainerRegistration> result = container.Registrations.ToArray();
 
             AreEqual(2, result.Count);
-            IsTrue(IsUnityContainerRegistration(result[0]));
-            IsTrue(IsExpectedRegisteredContainer(result[1], expectedFrom, expectedTo, expectedInstanceLifetimeManagerType));
+            IsUnityContainerRegistration(result[0]);
+            IsExpectedRegisteredContainer(result[1], expectedFrom, expectedTo, expectedInstanceLifetimeManagerType);
         }
 
         [Test]
