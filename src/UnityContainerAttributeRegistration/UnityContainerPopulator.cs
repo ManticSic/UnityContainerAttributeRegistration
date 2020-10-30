@@ -15,6 +15,7 @@ namespace UnityContainerAttributeRegistration
     {
         private readonly IPopulator typePopulator;
         private readonly IPopulator instancePopulator;
+        private readonly IPopulator factoryPopulator;
 
         /// <summary>
         ///     Use <see cref="System.AppDomain.CurrentDomain" /> to populate an <see cref="Unity.IUnityContainer" />
@@ -31,6 +32,7 @@ namespace UnityContainerAttributeRegistration
         {
             typePopulator     = new TypePopulator(appDomain);
             instancePopulator = new InstancePopulator(appDomain);
+            factoryPopulator  = new FactoryPopulator(appDomain);
         }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace UnityContainerAttributeRegistration
         {
             typePopulator.Populate(container);
             instancePopulator.Populate(container);
+            factoryPopulator.Populate(container);
 
             return container;
         }
