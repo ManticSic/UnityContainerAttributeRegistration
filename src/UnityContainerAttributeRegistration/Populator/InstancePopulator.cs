@@ -8,9 +8,7 @@ using JetBrains.Annotations;
 using Unity;
 using Unity.Lifetime;
 
-using UnityContainerAttributeRegistration.Provider;
 using UnityContainerAttributeRegistration.Attribute;
-using UnityContainerAttributeRegistration.Exention;
 
 
 namespace UnityContainerAttributeRegistration.Populator
@@ -20,25 +18,10 @@ namespace UnityContainerAttributeRegistration.Populator
     /// </summary>
     internal class InstancePopulator : Populator
     {
-        /// <summary>
-        ///     ctor
-        /// </summary>
-        /// <param name="appDomain">Used <see cref="IAssemblyProvider" /> for searching for candidates.</param>
-        public InstancePopulator(IAssemblyProvider appDomain) : base(appDomain)
-        {
-        }
-
-        /// <summary>
-        ///     Populate the passed <paramref name="container" />.
-        /// </summary>
-        /// <param name="container"><see cref="IUnityContainer" /> to populate.</param>
-        /// <returns>Passed <paramref name="container" />.</returns>
+        /// <inheritdoc cref="Populator.Populate" />
         /// <exception cref="InvalidOperationException">Class type must not be static or abstract.</exception>
-        public override IUnityContainer Populate(IUnityContainer container)
+        public override IUnityContainer Populate(IUnityContainer container, IList<Type> typesWithAttribute)
         {
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterInstanceProviderAttribute>(TypeDefined.Inherit)
-               .ToList();
-
             IEnumerable<InstanceToRegister> instancesToRegister =
                 typesWithAttribute.SelectMany(providerClassType => GetInstancesToRegisterFor(container, providerClassType));
 
@@ -54,7 +37,7 @@ namespace UnityContainerAttributeRegistration.Populator
         }
 
         /// <summary>
-        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterInstanceProviderAttribute" />
+        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterProviderAttribute" />
         /// </summary>
         /// <param name="container"><see cref="IUnityContainer" /> to resolve <paramref name="providerClassType" /></param>
         /// <param name="providerClassType">Class type used to search for <see cref="RegisterInstanceAttribute" /></param>
@@ -62,12 +45,6 @@ namespace UnityContainerAttributeRegistration.Populator
         /// <exception cref="InvalidOperationException"><paramref name="providerClassType" /> type must not be static or abstract.</exception>
         private IEnumerable<InstanceToRegister> GetInstancesToRegisterFor(IUnityContainer container, Type providerClassType)
         {
-            if(providerClassType.IsStatic() || providerClassType.IsAbstract)
-            {
-                throw new InvalidOperationException(
-                    $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {providerClassType.FullName}");
-            }
-
             object         providerClassInstance = container.Resolve(providerClassType);
             PropertyInfo[] properties            = providerClassType.GetProperties();
 
@@ -89,7 +66,7 @@ namespace UnityContainerAttributeRegistration.Populator
         }
 
         /// <summary>
-        ///     Wrapper to regsiter isntances
+        ///     Wrapper to register isntances
         /// </summary>
         private sealed class InstanceToRegister
         {

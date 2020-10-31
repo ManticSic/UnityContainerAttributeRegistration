@@ -5,7 +5,7 @@ using UnityContainerAttributeRegistration.Attribute;
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestClasses
 {
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class DefaultProvider
     {
         [RegisterInstance]
@@ -15,7 +15,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderUsingFromWithoutLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface))]
@@ -25,7 +25,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderUsingFromWithSingletonLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(SingletonLifetimeManager))]
@@ -35,7 +35,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderUsingFromWithContainerControlledLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(ContainerControlledLifetimeManager))]
@@ -45,7 +45,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderUsingFromWithExternallyControlledLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(ExternallyControlledLifetimeManager))]
@@ -55,7 +55,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderWithExternallyControlledLifetimeManager
     {
         [RegisterInstance(null, typeof(ExternallyControlledLifetimeManager))]
@@ -65,7 +65,7 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class ProviderWithLifetimemanagerWithoutInterface
     {
         [RegisterInstance(null, typeof(LifetimeManagerWithoutInterface))]
@@ -75,12 +75,12 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
         }
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public static class StaticClassWithAttribute
     {
     }
 
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public abstract class AbstractClassWithAttribute
     {
     }

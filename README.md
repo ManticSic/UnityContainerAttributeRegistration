@@ -35,9 +35,9 @@ namespace My.Awesome.App
 
 ### Register instances
 
-You can register instances to an unity container using `UnityContainerAttributeRegistration.Attribute.RegisterInstanceProviderAttribute` and `UnityContainerAttributeRegistration.Attribute.RegisterInstanceAttribute`.
+You can register instances to an unity container using `UnityContainerAttributeRegistration.Attribute.RegisterProviderAttribute` and `UnityContainerAttributeRegistration.Attribute.RegisterInstanceAttribute`.
 
-Classes marked with `UnityContainerAttributeRegistration.Attribute.RegisterInstanceProviderAttribute` will be instantiated using the container which should be populated with the instances.
+Classes marked with `UnityContainerAttributeRegistration.Attribute.RegisterProviderAttribute` will be instantiated using the container which should be populated with the instances.
 So you can use already registered services to create the instances, which should be later registered.
 
 ```
@@ -52,11 +52,50 @@ namespace My.Awesome.App
         }
     }
     
-    [RegisterInstanceProvider]
+    [RegisterProvider]
     public class InstanceProvider
     {
         [RegisterInstance]
         public string Token = "Hard coded token";
+    }
+}
+```
+
+### Register Factory
+
+You can register factory methods to an unity container using `UnityContainerAttributeRegistration.Attribute.RegisterProviderAttribute` and `UnityContainerAttributeRegistration.Attribute.RegisterFactoryAttribute`.
+
+Classes marked with `UnityContainerAttributeRegistration.Attribute.RegisterProviderAttribute` will be instantiated using the container which should be populated with the instances.
+So you can use already registered services to create the instances, which should be later registered.
+
+Its only important to have the right parameters (see example).
+
+```
+namespace My.Awesome.App
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            UnityContainerPopulator populator = new UnityContainerPopulator();
+            IUnityContainer container = populator.Populate();
+        }
+    }
+    
+    [RegisterProvider]
+    public class InstanceProvider
+    {
+        [RegisterFactory]
+        public MyClass Factory(IUnityContainer container)
+        {
+            // do some magic
+        }
+
+        [RegisterFactory]
+        public MyClass Factory(IUnityContainer container, Type typeValue, string stringvalue)
+        {
+            // do some magic
+        }
     }
 }
 ```

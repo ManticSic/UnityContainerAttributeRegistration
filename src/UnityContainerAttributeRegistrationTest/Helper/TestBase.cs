@@ -2,20 +2,23 @@
 
 using Unity;
 
+using static NUnit.Framework.Assert;
+
 
 namespace UnityContainerAttributeRegistrationTest.Helper
 {
     public abstract class TestBase
     {
-        protected bool IsUnityContainerRegistration(IContainerRegistration registration)
+        protected void IsUnityContainerRegistration(IContainerRegistration registration)
         {
             bool registeredType = registration.RegisteredType == typeof(IUnityContainer);
             bool mappedToType   = registration.MappedToType == typeof(UnityContainer);
 
-            return registeredType && mappedToType;
+            IsTrue(registeredType);
+            IsTrue(mappedToType);
         }
 
-        protected bool IsExpectedRegisteredContainer(IContainerRegistration registration,
+        protected void IsExpectedRegisteredContainer(IContainerRegistration registration,
                                                      Type                   expectedFrom,
                                                      Type                   expectedTo,
                                                      Type                   expectedTypeLifetimeManagerType)
@@ -24,7 +27,9 @@ namespace UnityContainerAttributeRegistrationTest.Helper
             bool mappedToType    = registration.MappedToType == expectedTo;
             bool lifetimeManager = registration.LifetimeManager.GetType() == expectedTypeLifetimeManagerType;
 
-            return registeredType && mappedToType && lifetimeManager;
+            IsTrue(registeredType);
+            IsTrue(mappedToType);
+            IsTrue(lifetimeManager);
         }
     }
 }

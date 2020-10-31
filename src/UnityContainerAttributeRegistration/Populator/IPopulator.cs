@@ -1,4 +1,7 @@
-﻿using Unity;
+﻿using System;
+using System.Collections.Generic;
+
+using Unity;
 
 
 namespace UnityContainerAttributeRegistration.Populator
@@ -12,7 +15,8 @@ namespace UnityContainerAttributeRegistration.Populator
         ///     Populate the passed <paramref name="container" />.
         /// </summary>
         /// <param name="container"><see cref="IUnityContainer" /> to populate.</param>
+        /// <param name="typesWith"></param>
         /// <returns>Passed <paramref name="container" />.</returns>
-        IUnityContainer Populate(IUnityContainer container);
+        IUnityContainer Populate(IUnityContainer container, IList<Type> typesWith);
     }
 }
