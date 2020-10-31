@@ -15,7 +15,7 @@ namespace UnityContainerAttributeRegistration.Populator
     /// </summary>
     internal class TypePopulator : Populator
     {
-        /// <inheritdoc cref="Populator" />
+        /// <inheritdoc cref="Populator.Populate" />
         /// <exception cref="InvalidOperationException">Class type must not be static or abstract.</exception>
         public override IUnityContainer Populate(IUnityContainer container, IList<Type> typesWithAttribute)
         {
