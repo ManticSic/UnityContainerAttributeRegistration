@@ -2,8 +2,6 @@
 
 using JetBrains.Annotations;
 
-using Unity.Lifetime;
-
 
 namespace UnityContainerAttributeRegistration.Attribute
 {

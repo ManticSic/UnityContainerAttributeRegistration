@@ -9,23 +9,14 @@ using Unity;
 using Unity.Lifetime;
 
 using UnityContainerAttributeRegistration.Attribute;
-using UnityContainerAttributeRegistration.Exention;
-using UnityContainerAttributeRegistration.Provider;
 
 
 namespace UnityContainerAttributeRegistration.Populator
 {
     internal class FactoryPopulator : Populator
     {
-        public FactoryPopulator(IAssemblyProvider assemblyProvider) : base(assemblyProvider)
+        public override IUnityContainer Populate(IUnityContainer container, IList<Type> typesWithAttribute)
         {
-        }
-
-        public override IUnityContainer Populate(IUnityContainer container)
-        {
-            IList<Type> typesWithAttribute = GetTypesWith<RegisterProviderAttribute>(TypeDefined.Inherit)
-               .ToList();
-
             IEnumerable<FactoryToRegister> factoriesToRegister =
                 typesWithAttribute.SelectMany(providerClassType => GetInstancesToRegisterFor(container, providerClassType));
 
@@ -43,13 +34,6 @@ namespace UnityContainerAttributeRegistration.Populator
 
         private IEnumerable<FactoryToRegister> GetInstancesToRegisterFor(IUnityContainer container, Type providerClassType)
         {
-            if(providerClassType.IsStatic() || providerClassType.IsAbstract)
-            {
-                // todo is not covered, exception is thrown by another populator
-                throw new InvalidOperationException(
-                    $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {providerClassType.FullName}");
-            }
-
             object       providerClassInstance = container.Resolve(providerClassType);
             MethodInfo[] methodInfos            = providerClassType.GetMethods();
 
@@ -69,7 +53,7 @@ namespace UnityContainerAttributeRegistration.Populator
                 throw new InvalidOperationException("Return type must not be void.");
             }
 
-            if(!IsUnityFactorySignatur(info))
+            if(!IsUnityFactorySignature(info))
             {
                 throw new InvalidOperationException("Factory method signature does not match.");
             }
@@ -83,27 +67,22 @@ namespace UnityContainerAttributeRegistration.Populator
             return new FactoryToRegister(returnType, GetFactoryMethodFor(info, instance), lifetimeManager);
         }
 
-        private bool IsUnityFactorySignatur(MethodInfo methodInfo)
+        private bool IsUnityFactorySignature(MethodInfo methodInfo)
         {
             var parameters = methodInfo.GetParameters();
 
-            if(parameters.Length == 1
-                && parameters[0].ParameterType == typeof(IUnityContainer)
-               )
+            switch(parameters.Length)
             {
-                return true;
+                case 1 when parameters[0].ParameterType == typeof(IUnityContainer):
+                case 3 when parameters[0].ParameterType == typeof(IUnityContainer) && parameters[1].ParameterType == typeof(Type) && parameters[2].ParameterType == typeof(string):
+                {
+                    return true;
+                }
+                default:
+                {
+                    return false;
+                }
             }
-
-            if(parameters.Length == 3
-            && parameters[0].ParameterType == typeof(IUnityContainer)
-            && parameters[1].ParameterType == typeof(Type)
-            && parameters[2].ParameterType == typeof(string)
-            )
-            {
-                return true;
-            }
-
-            return false;
         }
 
         private Func<IUnityContainer, Type, string, object> GetFactoryMethodFor(MethodInfo methodInfo, object instance)

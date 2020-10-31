@@ -1,7 +1,13 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using JetBrains.Annotations;
 
 using Unity;
 
+using UnityContainerAttributeRegistration.Attribute;
+using UnityContainerAttributeRegistration.Exention;
 using UnityContainerAttributeRegistration.Populator;
 using UnityContainerAttributeRegistration.Provider;
 
@@ -13,9 +19,17 @@ namespace UnityContainerAttributeRegistration
     /// </summary>
     public sealed class UnityContainerPopulator
     {
-        private readonly IPopulator typePopulator;
-        private readonly IPopulator instancePopulator;
-        private readonly IPopulator factoryPopulator;
+        [NotNull]
+        private readonly IAssemblyProvider appDomain;
+
+        [NotNull]
+        private readonly IPopulator        typePopulator;
+
+        [NotNull]
+        private readonly IPopulator        instancePopulator;
+
+        [NotNull]
+        private readonly IPopulator        factoryPopulator;
 
         /// <summary>
         ///     Use <see cref="System.AppDomain.CurrentDomain" /> to populate an <see cref="Unity.IUnityContainer" />
@@ -30,9 +44,10 @@ namespace UnityContainerAttributeRegistration
         /// <param name="appDomain">Custom <see cref="IAssemblyProvider" /></param>
         public UnityContainerPopulator([NotNull] IAssemblyProvider appDomain)
         {
-            typePopulator     = new TypePopulator(appDomain);
-            instancePopulator = new InstancePopulator(appDomain);
-            factoryPopulator  = new FactoryPopulator(appDomain);
+            this.appDomain    = appDomain;
+            typePopulator     = new TypePopulator();
+            instancePopulator = new InstancePopulator();
+            factoryPopulator  = new FactoryPopulator();
         }
 
         /// <summary>
@@ -53,11 +68,50 @@ namespace UnityContainerAttributeRegistration
         /// </returns>
         public IUnityContainer Populate([NotNull] IUnityContainer container)
         {
-            typePopulator.Populate(container);
-            instancePopulator.Populate(container);
-            factoryPopulator.Populate(container);
+            IDictionary<Type, IList<Type>> annotatedTypes = FindAnnotatedTypes(TypeDefined.Inherit);
+
+            typePopulator.Populate(container, annotatedTypes[typeof(RegisterTypeAttribute)]);
+            instancePopulator.Populate(container, annotatedTypes[typeof(RegisterProviderAttribute)]);
+            factoryPopulator.Populate(container, annotatedTypes[typeof(RegisterProviderAttribute)]);
 
             return container;
+        }
+
+        private IDictionary<Type, IList<Type>> FindAnnotatedTypes(TypeDefined typeDefined)
+        {
+            IEnumerable<Type> types = appDomain.GetAssemblies()
+                                               .SelectMany(assembly => assembly.GetTypes());
+
+            IDictionary<Type, IList<Type>> typesPerAttribute = new Dictionary<Type, IList<Type>>()
+                                                   {
+                                                       {typeof(RegisterTypeAttribute), new List<Type>()},
+                                                       {typeof(RegisterProviderAttribute), new List<Type>()}
+                                                   };
+
+            foreach(Type classType in types)
+            {
+                // todo avoid nested loop
+#pragma warning disable AV1532
+                foreach(KeyValuePair<Type, IList<Type>> kv in typesPerAttribute)
+#pragma warning restore AV1532
+                {
+                    Type        attributeType      = kv.Key;
+                    IList<Type> typesWithAttribute = kv.Value;
+
+                    if (classType.IsDefined(attributeType, typeDefined == TypeDefined.Inherit))
+                    {
+                        if(classType.IsStatic() || classType.IsAbstract)
+                        {
+                            throw new InvalidOperationException(
+                                $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {classType.FullName}");
+                        }
+
+                        typesWithAttribute.Add(classType);
+                    }
+                }
+            }
+
+            return typesPerAttribute;
         }
     }
 }

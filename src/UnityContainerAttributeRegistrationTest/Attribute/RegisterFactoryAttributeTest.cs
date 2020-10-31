@@ -44,6 +44,9 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             AreEqual(2, result.Count);
             IsUnityContainerRegistration(result[0]);
             IsExpectedRegisteredContainer(result[1], expectedFrom, expectedTo, expectedFactoryLifetimeManagerType);
+
+            object obj = container.Resolve(expectedTo);
+            NotNull(obj);
         }
 
         [Test]
