@@ -14,7 +14,7 @@ namespace UnityContainerAttributeRegistration.Attribute
         /// <summary>
         ///     Candidate for registration to <see cref="Unity" />.
         /// </summary>
-        public RegisterFactoryAttribute([CanBeNull] Type from = null,
+        public RegisterFactoryAttribute([CanBeNull] Type from            = null,
                                         [CanBeNull] Type lifetimeManager = null)
         {
             From            = from;

@@ -23,13 +23,13 @@ namespace UnityContainerAttributeRegistration
         private readonly IAssemblyProvider appDomain;
 
         [NotNull]
-        private readonly IPopulator        typePopulator;
+        private readonly IPopulator typePopulator;
 
         [NotNull]
-        private readonly IPopulator        instancePopulator;
+        private readonly IPopulator instancePopulator;
 
         [NotNull]
-        private readonly IPopulator        factoryPopulator;
+        private readonly IPopulator factoryPopulator;
 
         /// <summary>
         ///     Use <see cref="System.AppDomain.CurrentDomain" /> to populate an <see cref="Unity.IUnityContainer" />
@@ -82,11 +82,11 @@ namespace UnityContainerAttributeRegistration
             IEnumerable<Type> types = appDomain.GetAssemblies()
                                                .SelectMany(assembly => assembly.GetTypes());
 
-            IDictionary<Type, IList<Type>> typesPerAttribute = new Dictionary<Type, IList<Type>>()
-                                                   {
-                                                       {typeof(RegisterTypeAttribute), new List<Type>()},
-                                                       {typeof(RegisterProviderAttribute), new List<Type>()}
-                                                   };
+            IDictionary<Type, IList<Type>> typesPerAttribute = new Dictionary<Type, IList<Type>>
+                                                               {
+                                                                   {typeof(RegisterTypeAttribute), new List<Type>()},
+                                                                   {typeof(RegisterProviderAttribute), new List<Type>()}
+                                                               };
 
             foreach(Type classType in types)
             {
@@ -98,7 +98,7 @@ namespace UnityContainerAttributeRegistration
                     Type        attributeType      = kv.Key;
                     IList<Type> typesWithAttribute = kv.Value;
 
-                    if (classType.IsDefined(attributeType, typeDefined == TypeDefined.Inherit))
+                    if(classType.IsDefined(attributeType, typeDefined == TypeDefined.Inherit))
                     {
                         if(classType.IsStatic() || classType.IsAbstract)
                         {

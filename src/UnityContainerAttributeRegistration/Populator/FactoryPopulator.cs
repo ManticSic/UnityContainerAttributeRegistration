@@ -22,9 +22,9 @@ namespace UnityContainerAttributeRegistration.Populator
 
             foreach(FactoryToRegister factoryToRegister in factoriesToRegister)
             {
-                Type                                        returnType = factoryToRegister.ReturnType;
-                Func<IUnityContainer, Type, string, object> factory    = factoryToRegister.Factory;
-                IFactoryLifetimeManager lifetimeManager = factoryToRegister.LifetimeManager;
+                Type                                        returnType      = factoryToRegister.ReturnType;
+                Func<IUnityContainer, Type, string, object> factory         = factoryToRegister.Factory;
+                IFactoryLifetimeManager                     lifetimeManager = factoryToRegister.LifetimeManager;
 
                 container.RegisterFactory(returnType, factory, lifetimeManager);
             }
@@ -35,7 +35,7 @@ namespace UnityContainerAttributeRegistration.Populator
         private IEnumerable<FactoryToRegister> GetInstancesToRegisterFor(IUnityContainer container, Type providerClassType)
         {
             object       providerClassInstance = container.Resolve(providerClassType);
-            MethodInfo[] methodInfos            = providerClassType.GetMethods();
+            MethodInfo[] methodInfos           = providerClassType.GetMethods();
 
             return methodInfos
                   .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterFactoryAttribute)))
@@ -63,18 +63,21 @@ namespace UnityContainerAttributeRegistration.Populator
                     ? null
                     : GetInstanceByType<IFactoryLifetimeManager>(attribute.LifetimeManager);
 
-
             return new FactoryToRegister(returnType, GetFactoryMethodFor(info, instance), lifetimeManager);
         }
 
         private bool IsUnityFactorySignature(MethodInfo methodInfo)
         {
-            var parameters = methodInfo.GetParameters();
+            ParameterInfo[] parameters = methodInfo.GetParameters();
 
             switch(parameters.Length)
             {
-                case 1 when parameters[0].ParameterType == typeof(IUnityContainer):
-                case 3 when parameters[0].ParameterType == typeof(IUnityContainer) && parameters[1].ParameterType == typeof(Type) && parameters[2].ParameterType == typeof(string):
+                case 1 when parameters[0]
+                               .ParameterType == typeof(IUnityContainer):
+                case 3 when parameters[0]
+                               .ParameterType == typeof(IUnityContainer) && parameters[1]
+                               .ParameterType == typeof(Type) && parameters[2]
+                               .ParameterType == typeof(string):
                 {
                     return true;
                 }
@@ -87,10 +90,12 @@ namespace UnityContainerAttributeRegistration.Populator
 
         private Func<IUnityContainer, Type, string, object> GetFactoryMethodFor(MethodInfo methodInfo, object instance)
         {
-            return (container, typeValue, stringValue) => {
-                       IList<object> invokeParams = new List<object>{container};
+            return (container, typeValue, stringValue) =>
+                   {
+                       IList<object> invokeParams = new List<object> {container};
 
-                       if(methodInfo.GetParameters().Length == 3)
+                       if(methodInfo.GetParameters()
+                                    .Length == 3)
                        {
                            invokeParams.Add(typeValue);
                            invokeParams.Add(stringValue);
@@ -102,10 +107,12 @@ namespace UnityContainerAttributeRegistration.Populator
 
         private sealed class FactoryToRegister
         {
-            public FactoryToRegister([NotNull] Type returnType, [NotNull] Func<IUnityContainer, Type, string, object> factory, [CanBeNull] IFactoryLifetimeManager lifetimeManager)
+            public FactoryToRegister([NotNull]   Type                                        returnType,
+                                     [NotNull]   Func<IUnityContainer, Type, string, object> factory,
+                                     [CanBeNull] IFactoryLifetimeManager                     lifetimeManager)
             {
-                ReturnType           = returnType;
-                Factory              = factory;
+                ReturnType      = returnType;
+                Factory         = factory;
                 LifetimeManager = lifetimeManager;
             }
 

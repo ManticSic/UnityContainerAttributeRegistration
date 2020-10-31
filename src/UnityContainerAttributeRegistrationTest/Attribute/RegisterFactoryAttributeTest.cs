@@ -23,14 +23,22 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         [TestCase(typeof(ProviderWithOneArgument), typeof(MyClass), typeof(MyClass), typeof(TransientLifetimeManager))]
         [TestCase(typeof(ProviderWithThreeArguments), typeof(MyClass), typeof(MyClass), typeof(TransientLifetimeManager))]
         [TestCase(typeof(ProviderUsingInterface), typeof(IMyInterface), typeof(IMyInterface), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ProviderWithHierarchicalLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(HierarchicalLifetimeManager))]
-        [TestCase(typeof(ProviderWithSingletonLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(SingletonLifetimeManager))]
-        [TestCase(typeof(ProviderWithTransientLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(TransientLifetimeManager))]
-        [TestCase(typeof(ProviderWithContainerControlledLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(ContainerControlledLifetimeManager))]
-        [TestCase(typeof(ProviderWithContainerControlledTransientManager), typeof(MyClass), typeof(MyClass), typeof(ContainerControlledTransientManager))]
-        [TestCase(typeof(ProviderWithExternallyControlledLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(ExternallyControlledLifetimeManager))]
-        [TestCase(typeof(ProviderWithPerResolveLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(PerResolveLifetimeManager))]
-        [TestCase(typeof(ProviderWithPerThreadLifetimeManager), typeof(MyClass), typeof(MyClass), typeof(PerThreadLifetimeManager))]
+        [TestCase(typeof(ProviderWithHierarchicalLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(HierarchicalLifetimeManager))]
+        [TestCase(typeof(ProviderWithSingletonLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(SingletonLifetimeManager))]
+        [TestCase(typeof(ProviderWithTransientLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(TransientLifetimeManager))]
+        [TestCase(typeof(ProviderWithContainerControlledLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(ContainerControlledLifetimeManager))]
+        [TestCase(typeof(ProviderWithContainerControlledTransientManager), typeof(MyClass), typeof(MyClass),
+                  typeof(ContainerControlledTransientManager))]
+        [TestCase(typeof(ProviderWithExternallyControlledLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(ExternallyControlledLifetimeManager))]
+        [TestCase(typeof(ProviderWithPerResolveLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(PerResolveLifetimeManager))]
+        [TestCase(typeof(ProviderWithPerThreadLifetimeManager), typeof(MyClass), typeof(MyClass),
+                  typeof(PerThreadLifetimeManager))]
         public void TestPopulate(Type providerType, Type expectedFrom, Type expectedTo, Type expectedFactoryLifetimeManagerType)
         {
             Scope scope = new Scope();

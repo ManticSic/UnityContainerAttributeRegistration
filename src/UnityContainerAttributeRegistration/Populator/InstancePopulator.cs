@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 using Unity;
 using Unity.Lifetime;
 
-using UnityContainerAttributeRegistration.Provider;
 using UnityContainerAttributeRegistration.Attribute;
 
 
@@ -19,7 +18,7 @@ namespace UnityContainerAttributeRegistration.Populator
     /// </summary>
     internal class InstancePopulator : Populator
     {
-        /// <inheritdoc cref="Populator"/>
+        /// <inheritdoc cref="Populator" />
         /// <exception cref="InvalidOperationException">Class type must not be static or abstract.</exception>
         public override IUnityContainer Populate(IUnityContainer container, IList<Type> typesWithAttribute)
         {

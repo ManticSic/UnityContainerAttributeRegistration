@@ -125,7 +125,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         public void Factory(IUnityContainer container)
         {
         }
-
     }
 
     [RegisterProvider]
@@ -135,7 +134,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         public void Factory(IUnityContainer container, Type typeValue, string stringValue)
         {
         }
-
     }
 
     [RegisterProvider]
@@ -146,7 +144,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         {
             return new MyClass();
         }
-
     }
 
     [RegisterProvider]
@@ -157,7 +154,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         {
             return new MyClass();
         }
-
     }
 
     [RegisterProvider]
@@ -168,7 +164,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         {
             return new MyClass();
         }
-
     }
 
     [RegisterProvider]
@@ -179,7 +174,6 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         {
             return new MyClass();
         }
-
     }
 
     [RegisterProvider]
