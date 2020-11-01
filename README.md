@@ -40,7 +40,7 @@ You can register instances to an unity container using `UnityContainerAttributeR
 Classes marked with `UnityContainerAttributeRegistration.Attribute.RegisterProviderAttribute` will be instantiated using the container which should be populated with the instances.
 So you can use already registered services to create the instances, which should be later registered.
 
-```
+```cs
 namespace My.Awesome.App
 {
     public class Program
@@ -70,7 +70,7 @@ So you can use already registered services to create the instances, which should
 
 Its only important to have the right parameters (see example).
 
-```
+```cs
 namespace My.Awesome.App
 {
     public class Program
@@ -104,7 +104,7 @@ namespace My.Awesome.App
 
 It is possible to populate a already created container.
 
-```
+```cs
 namespace My.Awesome.App
 {
     public class Program
@@ -123,7 +123,7 @@ namespace My.Awesome.App
 
 You can restrict the assemblies to check, e. g. to create a container only containing registrations of one assembly.
 
-```
+```cs
 namespace My.Awesome.App
 {
     public class Program
