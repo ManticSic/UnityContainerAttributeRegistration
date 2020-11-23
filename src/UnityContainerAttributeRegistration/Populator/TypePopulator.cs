@@ -19,11 +19,13 @@ namespace UnityContainerAttributeRegistration.Populator
             foreach (Type to in typesWithAttribute)
             {
                 RegisterTypeAttribute attribute = to.GetCustomAttribute<RegisterTypeAttribute>();
+                Type                  from      = attribute.From;
+                string                name      = attribute.Name;
                 ITypeLifetimeManager lifetimeManager = attribute.LifetimeManager == null
                                                            ? null
                                                            : GetInstanceByType<ITypeLifetimeManager>(attribute.LifetimeManager);
 
-                container.RegisterType(attribute.From, to, lifetimeManager);
+                container.RegisterType(from, to, name, lifetimeManager);
             }
 
             return container;

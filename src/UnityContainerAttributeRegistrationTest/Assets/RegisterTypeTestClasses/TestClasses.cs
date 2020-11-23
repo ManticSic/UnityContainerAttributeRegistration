@@ -89,6 +89,11 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses
     {
     }
 
+    [RegisterType("my-type")]
+    public class ClassWithName
+    {
+    }
+
     internal class TypeLifetimeManagerWithoutDefaultCtor : ITypeLifetimeManager
     {
         private readonly string anyValue;

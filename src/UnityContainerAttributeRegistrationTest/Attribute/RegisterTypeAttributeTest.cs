@@ -85,6 +85,20 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         }
 
         [Test]
+        public void TestPopulate_WithName()
+        {
+            Scope scope = new Scope();
+
+            scope.AddType(typeof(ClassWithName));
+
+            IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
+
+            ClassWithName result = container.Resolve<ClassWithName>("my-type");
+
+            IsNotNull(result);
+        }
+
+        [Test]
         public void TestPopulate_WithCustomContainer()
         {
             Scope scope = new Scope();
