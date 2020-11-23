@@ -24,10 +24,11 @@ namespace UnityContainerAttributeRegistration.Populator
             foreach (FactoryToRegister factoryToRegister in factoriesToRegister)
             {
                 Type                                        returnType      = factoryToRegister.ReturnType;
+                string                                      name            = factoryToRegister.Name;
                 Func<IUnityContainer, Type, string, object> factory         = factoryToRegister.Factory;
                 IFactoryLifetimeManager                     lifetimeManager = factoryToRegister.LifetimeManager;
 
-                container.RegisterFactory(returnType, factory, lifetimeManager);
+                container.RegisterFactory(returnType, name, factory, lifetimeManager);
             }
 
             return container;
@@ -62,6 +63,7 @@ namespace UnityContainerAttributeRegistration.Populator
         {
             RegisterFactoryAttribute attribute  = info.GetCustomAttribute<RegisterFactoryAttribute>();
             Type                     returnType = attribute.From ?? info.ReturnType;
+            string                   name       = attribute.Name;
 
             if (returnType == typeof(void))
             {
@@ -78,7 +80,7 @@ namespace UnityContainerAttributeRegistration.Populator
                     ? null
                     : GetInstanceByType<IFactoryLifetimeManager>(attribute.LifetimeManager);
 
-            return new FactoryToRegister(returnType, GetFactoryMethodFor(info, instance), lifetimeManager);
+            return new FactoryToRegister(returnType, name, GetFactoryMethodFor(info, instance), lifetimeManager);
         }
 
         /// <summary>
@@ -137,10 +139,12 @@ namespace UnityContainerAttributeRegistration.Populator
         private sealed class FactoryToRegister
         {
             public FactoryToRegister([NotNull]   Type                                        returnType,
+                                     [CanBeNull] string                                      name,
                                      [NotNull]   Func<IUnityContainer, Type, string, object> factory,
                                      [CanBeNull] IFactoryLifetimeManager                     lifetimeManager)
             {
                 ReturnType      = returnType;
+                Name            = name;
                 Factory         = factory;
                 LifetimeManager = lifetimeManager;
             }
@@ -150,6 +154,12 @@ namespace UnityContainerAttributeRegistration.Populator
             /// </summary>
             [NotNull]
             public Type ReturnType { get; }
+
+            /// <summary>
+            ///     Name for registration.
+            /// </summary>
+            [CanBeNull]
+            public string Name { get; }
 
             /// <summary>
             ///     Factory method

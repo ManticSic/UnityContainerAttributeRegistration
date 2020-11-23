@@ -184,6 +184,22 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
     }
 
     [RegisterProvider]
+    public class ProviderWithNamedFactories
+    {
+        [RegisterFactory("factory1", null, typeof(TransientLifetimeManager))]
+        public string Factory1(IUnityContainer container)
+        {
+            return "Foo";
+        }
+
+        [RegisterFactory("factory2", null, typeof(TransientLifetimeManager))]
+        public string Factory2(IUnityContainer container)
+        {
+            return "Bar";
+        }
+    }
+
+    [RegisterProvider]
     public static class StaticProvider
     {
     }
