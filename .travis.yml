@@ -36,8 +36,6 @@ deploy:
   file_glob: true
   file: 
     - "UnityContainerAttributeRegistration.${TRAVIS_TAG}.nupkg"
-    - "README.md"
-    - "CHANGELOG.md"
   skip_cleanup: true
   overwrite: true
   on:
