@@ -145,3 +145,34 @@ namespace My.Awesome.App
     }
 }
 ```
+
+### Register with name
+
+You can use the overloads of `RegisterTypeAttribute`, `RegisterInstanceAttribute` and `RegisterFactoryAttriube` to name the registration.
+
+```cs
+namespace My.Awesome.App
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            UnityContainerPopulator populator = new UnityContainerPopulator();
+            IUnityContainer container = populator.Populate();
+
+            string token = container.Resolve<string>("token");
+            string url   = container.Resolve<string>("url");
+        }
+    }
+    
+    [RegisterProvider]
+    public class InstanceProvider
+    {
+        [RegisterInstance("token")]
+        public string Token = "Hard coded token";
+
+        [RegisterInstance("url")]
+        public string Url = "https://hardcoded.url";
+    }
+}
+```
