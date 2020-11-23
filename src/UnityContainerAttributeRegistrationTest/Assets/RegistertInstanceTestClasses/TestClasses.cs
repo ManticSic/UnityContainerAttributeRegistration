@@ -76,6 +76,16 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
     }
 
     [RegisterProvider]
+    public class ProviderWithName
+    {
+        [RegisterInstance("val1")]
+        public string Value1 { get; } = "Foo";
+
+        [RegisterInstance("val2")]
+        public string Value2 { get; } = "Bar";
+    }
+
+    [RegisterProvider]
     public static class StaticClassWithAttribute
     {
     }

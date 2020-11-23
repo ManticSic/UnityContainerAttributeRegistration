@@ -60,6 +60,22 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
         }
 
         [Test]
+        public void TestPopulate_WithName()
+        {
+            Scope scope = new Scope();
+
+            scope.AddType(typeof(ProviderWithName));
+
+            IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
+
+            string val1 = container.Resolve<string>("val1");
+            string val2 = container.Resolve<string>("val2");
+
+            AreEqual("Foo", val1);
+            AreEqual("Bar", val2);
+        }
+
+        [Test]
         public void TestPopulate_WithCustomContainer()
         {
             Scope scope = new Scope();

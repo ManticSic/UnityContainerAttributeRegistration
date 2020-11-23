@@ -28,9 +28,10 @@ namespace UnityContainerAttributeRegistration.Populator
             foreach(InstanceToRegister instanceToRegister in instancesToRegister)
             {
                 Type                     type            = instanceToRegister.Type;
+                string                   name            = instanceToRegister.Name;
                 object                   instance        = instanceToRegister.Instance;
                 IInstanceLifetimeManager lifetimeManager = instanceToRegister.LifetimeManager;
-                container.RegisterInstance(type, instance, lifetimeManager);
+                container.RegisterInstance(type, name, instance, lifetimeManager);
             }
 
             return container;
@@ -54,13 +55,14 @@ namespace UnityContainerAttributeRegistration.Populator
                           {
                               object                    instance  = info.GetValue(providerClassInstance);
                               RegisterInstanceAttribute attribute = info.GetCustomAttribute<RegisterInstanceAttribute>();
+                              string                    name      = attribute.Name;
                               Type                      from      = attribute.From;
                               IInstanceLifetimeManager lifetimeManager =
                                   attribute.LifetimeManager == null
                                       ? null
                                       : GetInstanceByType<IInstanceLifetimeManager>(attribute.LifetimeManager);
 
-                              return new InstanceToRegister(instance, from, lifetimeManager);
+                              return new InstanceToRegister(instance, name, from, lifetimeManager);
                           })
                   .ToList();
         }
@@ -71,10 +73,12 @@ namespace UnityContainerAttributeRegistration.Populator
         private sealed class InstanceToRegister
         {
             public InstanceToRegister([CanBeNull] object                   instance,
+                                      [CanBeNull] string                   name,
                                       [CanBeNull] Type                     type,
                                       [CanBeNull] IInstanceLifetimeManager lifetimeManager)
             {
                 Instance        = instance;
+                Name            = name;
                 Type            = type;
                 LifetimeManager = lifetimeManager;
             }
@@ -84,6 +88,12 @@ namespace UnityContainerAttributeRegistration.Populator
             /// </summary>
             [CanBeNull]
             public object Instance { get; }
+
+            /// <summary>
+            ///     Name for registration.
+            /// </summary>
+            [CanBeNull]
+            public string Name { get; }
 
             /// <summary>
             ///     Requested type
