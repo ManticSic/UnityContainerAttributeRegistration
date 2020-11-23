@@ -1,7 +1,5 @@
 ﻿using System;
-
 using JetBrains.Annotations;
-
 
 namespace UnityContainerAttributeRegistration.Attribute
 {
@@ -15,7 +13,10 @@ namespace UnityContainerAttributeRegistration.Attribute
         ///     Candidate for registration to <see cref="Unity" />.
         /// </summary>
         /// <param name="from"><see cref="Type" /> that will be requested.</param>
-        /// <param name="lifetimeManager">The <see cref="Unity.Lifetime.IInstanceLifetimeManager" /> that controls the lifetime of the returned instance.</param>
+        /// <param name="lifetimeManager">
+        ///     The <see cref="Unity.Lifetime.IInstanceLifetimeManager" /> that controls the lifetime of
+        ///     the returned instance.
+        /// </param>
         public RegisterInstanceAttribute([CanBeNull] Type from            = null,
                                          [CanBeNull] Type lifetimeManager = null)
         {
@@ -29,9 +30,12 @@ namespace UnityContainerAttributeRegistration.Attribute
         /// </summary>
         /// <param name="name">Name for registration</param>
         /// <param name="from"><see cref="Type" /> that will be requested.</param>
-        /// <param name="lifetimeManager">The <see cref="Unity.Lifetime.IInstanceLifetimeManager" /> that controls the lifetime of the returned instance.</param>
+        /// <param name="lifetimeManager">
+        ///     The <see cref="Unity.Lifetime.IInstanceLifetimeManager" /> that controls the lifetime of
+        ///     the returned instance.
+        /// </param>
         public RegisterInstanceAttribute([NotNull]   string name,
-                                         [CanBeNull] Type from = null,
+                                         [CanBeNull] Type   from            = null,
                                          [CanBeNull] Type   lifetimeManager = null)
         {
             Name            = name;

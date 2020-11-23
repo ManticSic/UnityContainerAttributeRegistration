@@ -1,10 +1,7 @@
 ﻿using System;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClasses
 {

@@ -1,9 +1,6 @@
 ﻿using System;
-
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses
 {

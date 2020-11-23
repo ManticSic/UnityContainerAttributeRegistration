@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-
 namespace UnityContainerAttributeRegistration.Provider
 {
     /// <summary>
