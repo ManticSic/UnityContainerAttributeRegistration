@@ -1,8 +1,16 @@
 ﻿# Changelog
 
+## 0.3.0 (2020-11-18)
+### Code
+- added: Attribute to register a factory
+- changed: Rename `RegisterInstanceProvider` to `RegisterProvider`
+- changed: Improve performance by reducing iterations
+
+### Project
+
 ## 0.2.0 (2020-10-24)
 ### Code
-- added: Attributes to register concrete instances
+- added: Attribute to register concrete instances
 - changed: Rename `AppDomainAdapter` to `AssemblyProvider`
 
 ### Project
