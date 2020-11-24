@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using JetBrains.Annotations;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistration.Populator
 {
@@ -25,19 +21,21 @@ namespace UnityContainerAttributeRegistration.Populator
             IEnumerable<InstanceToRegister> instancesToRegister =
                 typesWithAttribute.SelectMany(providerClassType => GetInstancesToRegisterFor(container, providerClassType));
 
-            foreach(InstanceToRegister instanceToRegister in instancesToRegister)
+            foreach (InstanceToRegister instanceToRegister in instancesToRegister)
             {
                 Type                     type            = instanceToRegister.Type;
+                string                   name            = instanceToRegister.Name;
                 object                   instance        = instanceToRegister.Instance;
                 IInstanceLifetimeManager lifetimeManager = instanceToRegister.LifetimeManager;
-                container.RegisterInstance(type, instance, lifetimeManager);
+                container.RegisterInstance(type, name, instance, lifetimeManager);
             }
 
             return container;
         }
 
         /// <summary>
-        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with <see cref="RegisterProviderAttribute" />
+        ///     Create a list of <see cref="InstanceToRegister" /> depending on class marked with
+        ///     <see cref="RegisterProviderAttribute" />
         /// </summary>
         /// <param name="container"><see cref="IUnityContainer" /> to resolve <paramref name="providerClassType" /></param>
         /// <param name="providerClassType">Class type used to search for <see cref="RegisterInstanceAttribute" /></param>
@@ -49,20 +47,21 @@ namespace UnityContainerAttributeRegistration.Populator
             PropertyInfo[] properties            = providerClassType.GetProperties();
 
             return properties
-                  .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterInstanceAttribute)))
-                  .Select(info =>
-                          {
-                              object                    instance  = info.GetValue(providerClassInstance);
-                              RegisterInstanceAttribute attribute = info.GetCustomAttribute<RegisterInstanceAttribute>();
-                              Type                      from      = attribute.From;
-                              IInstanceLifetimeManager lifetimeManager =
-                                  attribute.LifetimeManager == null
-                                      ? null
-                                      : GetInstanceByType<IInstanceLifetimeManager>(attribute.LifetimeManager);
+                   .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterInstanceAttribute)))
+                   .Select(info =>
+                           {
+                               object                    instance  = info.GetValue(providerClassInstance);
+                               RegisterInstanceAttribute attribute = info.GetCustomAttribute<RegisterInstanceAttribute>();
+                               string                    name      = attribute.Name;
+                               Type                      from      = attribute.From;
+                               IInstanceLifetimeManager lifetimeManager =
+                                   attribute.LifetimeManager == null
+                                       ? null
+                                       : GetInstanceByType<IInstanceLifetimeManager>(attribute.LifetimeManager);
 
-                              return new InstanceToRegister(instance, from, lifetimeManager);
-                          })
-                  .ToList();
+                               return new InstanceToRegister(instance, name, from, lifetimeManager);
+                           })
+                   .ToList();
         }
 
         /// <summary>
@@ -71,10 +70,12 @@ namespace UnityContainerAttributeRegistration.Populator
         private sealed class InstanceToRegister
         {
             public InstanceToRegister([CanBeNull] object                   instance,
+                                      [CanBeNull] string                   name,
                                       [CanBeNull] Type                     type,
                                       [CanBeNull] IInstanceLifetimeManager lifetimeManager)
             {
                 Instance        = instance;
+                Name            = name;
                 Type            = type;
                 LifetimeManager = lifetimeManager;
             }
@@ -84,6 +85,12 @@ namespace UnityContainerAttributeRegistration.Populator
             /// </summary>
             [CanBeNull]
             public object Instance { get; }
+
+            /// <summary>
+            ///     Name for registration.
+            /// </summary>
+            [CanBeNull]
+            public string Name { get; }
 
             /// <summary>
             ///     Requested type

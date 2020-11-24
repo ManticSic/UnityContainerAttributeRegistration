@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using JetBrains.Annotations;
-
 using Unity;
-
 using UnityContainerAttributeRegistration.Attribute;
 using UnityContainerAttributeRegistration.Exention;
 using UnityContainerAttributeRegistration.Populator;
 using UnityContainerAttributeRegistration.Provider;
-
 
 namespace UnityContainerAttributeRegistration
 {
@@ -88,19 +84,19 @@ namespace UnityContainerAttributeRegistration
                                                                    {typeof(RegisterProviderAttribute), new List<Type>()}
                                                                };
 
-            foreach(Type classType in types)
+            foreach (Type classType in types)
             {
                 // todo avoid nested loop
 #pragma warning disable AV1532
-                foreach(KeyValuePair<Type, IList<Type>> kv in typesPerAttribute)
+                foreach (KeyValuePair<Type, IList<Type>> kv in typesPerAttribute)
 #pragma warning restore AV1532
                 {
                     Type        attributeType      = kv.Key;
                     IList<Type> typesWithAttribute = kv.Value;
 
-                    if(classType.IsDefined(attributeType, typeDefined == TypeDefined.Inherit))
+                    if (classType.IsDefined(attributeType, typeDefined == TypeDefined.Inherit))
                     {
-                        if(classType.IsStatic() || classType.IsAbstract)
+                        if (classType.IsStatic() || classType.IsAbstract)
                         {
                             throw new InvalidOperationException(
                                 $"Class type must not be static or abstract to be used with RegisterTypeAttribute: {classType.FullName}");

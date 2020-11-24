@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Unity;
-
 
 namespace UnityContainerAttributeRegistration.Populator
 {

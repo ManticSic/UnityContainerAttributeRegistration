@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NUnit.Framework;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration;
-
 using UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClasses;
 using UnityContainerAttributeRegistrationTest.Helper;
-
 using static NUnit.Framework.Assert;
 
 
@@ -73,6 +68,22 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             scope.AddType(providerType);
 
             Throws<InvalidOperationException>(() => new UnityContainerPopulator(scope.GetAppDomain()).Populate());
+        }
+
+        [Test]
+        public void TestPopulate_WithName()
+        {
+            Scope scope = new Scope();
+
+            scope.AddType(typeof(ProviderWithNamedFactories));
+
+            IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
+
+            string val1 = container.Resolve<string>("factory1");
+            string val2 = container.Resolve<string>("factory2");
+
+            AreEqual("Foo", val1);
+            AreEqual("Bar", val2);
         }
 
         [Test]

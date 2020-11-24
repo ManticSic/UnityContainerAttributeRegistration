@@ -1,7 +1,5 @@
 ﻿using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestClasses
 {
@@ -9,70 +7,59 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegistertInstanceTestCl
     public class DefaultProvider
     {
         [RegisterInstance]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderUsingFromWithoutLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderUsingFromWithSingletonLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(SingletonLifetimeManager))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderUsingFromWithContainerControlledLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(ContainerControlledLifetimeManager))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderUsingFromWithExternallyControlledLifetimeManager
     {
         [RegisterInstance(typeof(IAnyInterface), typeof(ExternallyControlledLifetimeManager))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderWithExternallyControlledLifetimeManager
     {
         [RegisterInstance(null, typeof(ExternallyControlledLifetimeManager))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
     }
 
     [RegisterProvider]
     public class ProviderWithLifetimemanagerWithoutInterface
     {
         [RegisterInstance(null, typeof(LifetimeManagerWithoutInterface))]
-        public AnyClass Value
-        {
-            get => new AnyClass();
-        }
+        public AnyClass Value => new AnyClass();
+    }
+
+    [RegisterProvider]
+    public class ProviderWithName
+    {
+        [RegisterInstance("val1")]
+        public string Value1 { get; } = "Foo";
+
+        [RegisterInstance("val2")]
+        public string Value2 { get; } = "Bar";
     }
 
     [RegisterProvider]

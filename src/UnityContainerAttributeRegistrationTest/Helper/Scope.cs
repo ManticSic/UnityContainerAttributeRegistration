@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using Moq;
-
 using UnityContainerAttributeRegistration.Provider;
-
 
 namespace UnityContainerAttributeRegistrationTest.Helper
 {
@@ -23,10 +20,7 @@ namespace UnityContainerAttributeRegistrationTest.Helper
             appDomainMock = new Mock<IAssemblyProvider>();
         }
 
-        public Assembly Assembly
-        {
-            get => assemblyMock.Object;
-        }
+        public Assembly Assembly => assemblyMock.Object;
 
         public void AddType(Type type)
         {

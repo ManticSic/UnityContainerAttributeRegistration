@@ -1,9 +1,6 @@
 ﻿using System;
-
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses
 {
@@ -89,6 +86,11 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses
 
     [RegisterType(null, typeof(TransientLifetimeManager))]
     public abstract class AbstractClassWithAttribute
+    {
+    }
+
+    [RegisterType("my-type")]
+    public class ClassWithName
     {
     }
 

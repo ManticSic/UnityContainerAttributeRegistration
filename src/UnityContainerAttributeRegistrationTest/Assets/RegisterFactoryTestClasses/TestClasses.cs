@@ -1,10 +1,7 @@
 ﻿using System;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClasses
 {
@@ -183,6 +180,22 @@ namespace UnityContainerAttributeRegistrationTest.Assets.RegisterFactoryTestClas
         public MyClass Factory(object objectValue)
         {
             return new MyClass();
+        }
+    }
+
+    [RegisterProvider]
+    public class ProviderWithNamedFactories
+    {
+        [RegisterFactory("factory1", null, typeof(TransientLifetimeManager))]
+        public string Factory1(IUnityContainer container)
+        {
+            return "Foo";
+        }
+
+        [RegisterFactory("factory2", null, typeof(TransientLifetimeManager))]
+        public string Factory2(IUnityContainer container)
+        {
+            return "Bar";
         }
     }
 

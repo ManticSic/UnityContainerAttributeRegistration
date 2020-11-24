@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NUnit.Framework;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration;
-
 using UnityContainerAttributeRegistrationTest.Assets.RegisterTypeTestClasses;
 using UnityContainerAttributeRegistrationTest.Helper;
-
 using static NUnit.Framework.Assert;
 
 
@@ -87,6 +82,20 @@ namespace UnityContainerAttributeRegistrationTest.Attribute
             scope.AddType(to);
 
             Throws<InvalidOperationException>(() => new UnityContainerPopulator(scope.GetAppDomain()).Populate());
+        }
+
+        [Test]
+        public void TestPopulate_WithName()
+        {
+            Scope scope = new Scope();
+
+            scope.AddType(typeof(ClassWithName));
+
+            IUnityContainer container = new UnityContainerPopulator(scope.GetAppDomain()).Populate();
+
+            ClassWithName result = container.Resolve<ClassWithName>("my-type");
+
+            IsNotNull(result);
         }
 
         [Test]

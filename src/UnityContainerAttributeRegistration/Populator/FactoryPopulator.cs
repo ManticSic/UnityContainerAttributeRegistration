@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using JetBrains.Annotations;
-
 using Unity;
 using Unity.Lifetime;
-
 using UnityContainerAttributeRegistration.Attribute;
-
 
 namespace UnityContainerAttributeRegistration.Populator
 {
@@ -25,13 +21,14 @@ namespace UnityContainerAttributeRegistration.Populator
             IEnumerable<FactoryToRegister> factoriesToRegister =
                 typesWithAttribute.SelectMany(providerClassType => GetFactoryToRegisterFor(container, providerClassType));
 
-            foreach(FactoryToRegister factoryToRegister in factoriesToRegister)
+            foreach (FactoryToRegister factoryToRegister in factoriesToRegister)
             {
                 Type                                        returnType      = factoryToRegister.ReturnType;
+                string                                      name            = factoryToRegister.Name;
                 Func<IUnityContainer, Type, string, object> factory         = factoryToRegister.Factory;
                 IFactoryLifetimeManager                     lifetimeManager = factoryToRegister.LifetimeManager;
 
-                container.RegisterFactory(returnType, factory, lifetimeManager);
+                container.RegisterFactory(returnType, name, factory, lifetimeManager);
             }
 
             return container;
@@ -50,9 +47,9 @@ namespace UnityContainerAttributeRegistration.Populator
             MethodInfo[] methodInfos           = providerClassType.GetMethods();
 
             return methodInfos
-                  .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterFactoryAttribute)))
-                  .Select(info => CreateFactoryToRegisterFrom(info, providerClassInstance))
-                  .ToList();
+                   .Where(info => info.CustomAttributes.Any(data => data.AttributeType == typeof(RegisterFactoryAttribute)))
+                   .Select(info => CreateFactoryToRegisterFrom(info, providerClassInstance))
+                   .ToList();
         }
 
         /// <summary>
@@ -66,13 +63,14 @@ namespace UnityContainerAttributeRegistration.Populator
         {
             RegisterFactoryAttribute attribute  = info.GetCustomAttribute<RegisterFactoryAttribute>();
             Type                     returnType = attribute.From ?? info.ReturnType;
+            string                   name       = attribute.Name;
 
-            if(returnType == typeof(void))
+            if (returnType == typeof(void))
             {
                 throw new InvalidOperationException("Return type must not be void.");
             }
 
-            if(!IsUnityFactorySignature(info))
+            if (!IsUnityFactorySignature(info))
             {
                 throw new InvalidOperationException("Factory method signature does not match.");
             }
@@ -82,7 +80,7 @@ namespace UnityContainerAttributeRegistration.Populator
                     ? null
                     : GetInstanceByType<IFactoryLifetimeManager>(attribute.LifetimeManager);
 
-            return new FactoryToRegister(returnType, GetFactoryMethodFor(info, instance), lifetimeManager);
+            return new FactoryToRegister(returnType, name, GetFactoryMethodFor(info, instance), lifetimeManager);
         }
 
         /// <summary>
@@ -94,14 +92,14 @@ namespace UnityContainerAttributeRegistration.Populator
         {
             ParameterInfo[] parameters = methodInfo.GetParameters();
 
-            switch(parameters.Length)
+            switch (parameters.Length)
             {
                 case 1 when parameters[0]
-                               .ParameterType == typeof(IUnityContainer):
+                                .ParameterType == typeof(IUnityContainer):
                 case 3 when parameters[0]
-                               .ParameterType == typeof(IUnityContainer) && parameters[1]
-                               .ParameterType == typeof(Type) && parameters[2]
-                               .ParameterType == typeof(string):
+                                .ParameterType == typeof(IUnityContainer) && parameters[1]
+                                .ParameterType == typeof(Type) && parameters[2]
+                                .ParameterType == typeof(string):
                 {
                     return true;
                 }
@@ -124,8 +122,8 @@ namespace UnityContainerAttributeRegistration.Populator
                    {
                        IList<object> invokeParams = new List<object> {container};
 
-                       if(methodInfo.GetParameters()
-                                    .Length == 3)
+                       if (methodInfo.GetParameters()
+                                     .Length == 3)
                        {
                            invokeParams.Add(typeValue);
                            invokeParams.Add(stringValue);
@@ -141,10 +139,12 @@ namespace UnityContainerAttributeRegistration.Populator
         private sealed class FactoryToRegister
         {
             public FactoryToRegister([NotNull]   Type                                        returnType,
+                                     [CanBeNull] string                                      name,
                                      [NotNull]   Func<IUnityContainer, Type, string, object> factory,
                                      [CanBeNull] IFactoryLifetimeManager                     lifetimeManager)
             {
                 ReturnType      = returnType;
+                Name            = name;
                 Factory         = factory;
                 LifetimeManager = lifetimeManager;
             }
@@ -154,6 +154,12 @@ namespace UnityContainerAttributeRegistration.Populator
             /// </summary>
             [NotNull]
             public Type ReturnType { get; }
+
+            /// <summary>
+            ///     Name for registration.
+            /// </summary>
+            [CanBeNull]
+            public string Name { get; }
 
             /// <summary>
             ///     Factory method
